@@ -1,11 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from '@reach/router';
 
 const styles = {
   root: {
@@ -22,11 +16,16 @@ const styles = {
 
 const Header = () => {
   return (
-    <header
-      style={{ textAlign: 'left', lineHeight: '1.6', paddingLeft: '10%' }}
-    >
-      NC NEWS
-    </header>
+    <>
+      <header
+        className="header"
+        style={{ textAlign: 'left', lineHeight: '1.6', paddingLeft: '10%' }}
+      >
+        <Link to="/" style={{ textDecoration: 'none', outline: 'none' }}>
+          <header className="header">NC NEWS</header>
+        </Link>
+      </header>
+    </>
   );
 };
 

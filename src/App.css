@@ -18,7 +18,11 @@ header {
   grid-area: header;
   font-family: 'Passion One', cursive;
   font-size: 80px;
-  background-color: rgba(228, 238, 238, 0.753);
+}
+
+.header {
+  background: url('../src/images/jonathan-riley-118591-unsplash.jpg');
+  background-size: 1900px 300px;
 }
 
 nav {

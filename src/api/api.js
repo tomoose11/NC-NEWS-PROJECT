@@ -14,3 +14,18 @@ export const getTopics = async () => {
   const { data } = await axios.get(`${BASE_URL}topics`);
   return data;
 };
+
+export const getSingleArticle = async id => {
+  const { data } = await axios.get(`${BASE_URL}articles/${id}`);
+  return data;
+};
+
+export const getCommentsForArticle = async id => {
+  const { data } = await axios.get(`${BASE_URL}articles/${id}/comments`);
+  return data;
+};
+
+export const getUsers = async () => {
+  const { data } = await axios.get(`${BASE_URL}users`);
+  return data;
+};

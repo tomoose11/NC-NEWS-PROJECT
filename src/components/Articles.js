@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import * as api from '../api/api';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { Link } from '@reach/router';
 
 const styles = theme => ({
   root: {
@@ -16,19 +15,37 @@ const styles = theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular
-  }
+  },
+  color: { color: 'red' }
 });
 
 class Articles extends Component {
   state = {
-    articles: []
+    articles: [],
+    topic: ''
   };
 
   componentDidMount = () => {
-    api.getArticles().then(data => {
-      console.log(data);
-      this.setState({ articles: data.articles });
-    });
+    if (this.props.topic) {
+      api.getArticles(this.props.topic).then(data => {
+        console.log(data);
+        this.setState({ articles: data.articles });
+      });
+    } else {
+      api.getArticles().then(data => {
+        console.log(data);
+        this.setState({ articles: data.articles });
+      });
+    }
+  };
+
+  componentDidUpdate = prevProps => {
+    if (this.props.topic !== prevProps.topic) {
+      api.getArticles(this.props.topic).then(data => {
+        console.log(data);
+        this.setState({ articles: data.articles });
+      });
+    }
   };
 
   render() {
@@ -36,7 +53,6 @@ class Articles extends Component {
       return (
         <>
           <ul id="articles" style={{ width: '80%', margin: 'auto' }}>
-            {/* <MuiThemeProvider theme={theme} /> */}
             <div className={styles.root}>
               {this.state.articles.map((item, index) => {
                 return (
@@ -49,10 +65,28 @@ class Articles extends Component {
                         >
                           {item.title}
                         </Typography>
+
+                        <Link
+                          to={`/articles/${item.article_id}`}
+                          style={{ textDecoration: 'none', outline: 'none' }}
+                        >
+                          <Button
+                            style={{
+                              marginLeft: '100px',
+                              backgroundColor: 'rgb(252, 71, 71)',
+                              color: 'white'
+                            }}
+                          >
+                            View Article
+                          </Button>
+                        </Link>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
-                        <Typography className={styles.heading}>
-                          {item.body}
+                        <Typography
+                          style={{ textAlign: 'left' }}
+                          className={styles.heading}
+                        >
+                          {item.body.substring(0, 400)}....
                         </Typography>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -61,7 +95,6 @@ class Articles extends Component {
               })}
             </div>
           </ul>
-          <Button>jljlk</Button>
         </>
       );
     } else {
