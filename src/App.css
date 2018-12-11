@@ -31,6 +31,10 @@ nav {
   display: flex;
 }
 
+main {
+  grid-area: main;
+}
+
 .sidebar {
   grid-area: sidebar;
   background-color: rgba(228, 238, 238, 0.753);

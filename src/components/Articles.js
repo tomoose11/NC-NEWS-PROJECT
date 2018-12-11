@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as api from '../api/api';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -7,6 +9,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link } from '@reach/router';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   root: {
@@ -16,7 +19,8 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular
   },
-  color: { color: 'red' }
+  color: { color: 'white' },
+  float: {}
 });
 
 class Articles extends Component {
@@ -50,10 +54,11 @@ class Articles extends Component {
 
   render() {
     if (this.state.articles.length > 0) {
+      const { classes } = this.props;
       return (
         <>
           <ul id="articles" style={{ width: '80%', margin: 'auto' }}>
-            <div className={styles.root}>
+            <div className={classes.root}>
               {this.state.articles.map((item, index) => {
                 return (
                   <>
@@ -61,25 +66,43 @@ class Articles extends Component {
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography
                           variant="subtitle2"
-                          style={{ fontSize: '20px' }}
+                          style={{
+                            fontSize: '20px',
+                            width: '200%',
+                            textAlign: 'left'
+                          }}
                         >
                           {item.title}
                         </Typography>
-
-                        <Link
-                          to={`/articles/${item.article_id}`}
-                          style={{ textDecoration: 'none', outline: 'none' }}
+                        <Grid
+                          container
+                          spacing={40}
+                          direction="row"
+                          justify="flex-end"
                         >
-                          <Button
-                            style={{
-                              marginLeft: '100px',
-                              backgroundColor: 'rgb(252, 71, 71)',
-                              color: 'white'
-                            }}
-                          >
-                            View Article
-                          </Button>
-                        </Link>
+                          <Grid item>
+                            <Link
+                              to={`/articles/${item.article_id}`}
+                              style={{
+                                textDecoration: 'none',
+                                outline: 'none'
+                              }}
+                            >
+                              <Button
+                                variant="outlined"
+                                style={{
+                                  marginLeft: '100px',
+                                  backgroundColor: 'white',
+                                  color: 'rgb(252, 71, 71)',
+                                  flex: 0
+                                }}
+                                className={classes.float}
+                              >
+                                View Article
+                              </Button>
+                            </Link>
+                          </Grid>
+                        </Grid>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <Typography
@@ -103,4 +126,8 @@ class Articles extends Component {
   }
 }
 
-export default Articles;
+Articles.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Articles);

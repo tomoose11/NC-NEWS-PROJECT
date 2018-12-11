@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './Login';
 import Header from './Header';
+import Sidebar from './Sidebar';
 
 const Auth = props => {
   if (props.user) {
@@ -9,7 +10,10 @@ const Auth = props => {
     return (
       <>
         <Header />
+        <nav style={{ backgroundColor: 'blue' }} />
         <Login findUser={props.findUser} />
+        <Sidebar />
+        <footer>footer</footer>
       </>
     );
   }

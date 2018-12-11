@@ -29,3 +29,17 @@ export const getUsers = async () => {
   const { data } = await axios.get(`${BASE_URL}users`);
   return data;
 };
+
+export const postArticle = async article => {
+  const { data } = await axios.post(
+    `${BASE_URL}topics/football/articles`,
+    article
+  );
+  return data;
+};
+
+// POST /api/topics/:topic/articles
+// ```
+
+// - accepts an object containing a `title` , `body` and a `user_id` property
+// - responds with the posted article

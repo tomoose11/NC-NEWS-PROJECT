@@ -14,14 +14,18 @@ const styles = {
   }
 };
 
-const Header = () => {
+const Header = props => {
   return (
     <>
       <header
         className="header"
         style={{ textAlign: 'left', lineHeight: '1.6', paddingLeft: '10%' }}
       >
-        <Link to="/" style={{ textDecoration: 'none', outline: 'none' }}>
+        <Link
+          onClick={() => props.handleTopic('Articles')}
+          to="/"
+          style={{ textDecoration: 'none', outline: 'none' }}
+        >
           <header className="header">NC NEWS</header>
         </Link>
       </header>
