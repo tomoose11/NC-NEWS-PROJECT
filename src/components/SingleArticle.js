@@ -48,7 +48,7 @@ const styles = theme => ({
 });
 
 class SingleArticle extends Component {
-  state = { expanded: false, SingleArticle: {}, comments: [] };
+  state = { expanded: false, SingleArticle: {}, comments: [], votes: 0 };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -80,6 +80,13 @@ class SingleArticle extends Component {
             <IconButton aria-label="Share">
               <ShareIcon />
             </IconButton>
+            <IconButton onClick={() => this.handleVote(1)} aria-label="Share">
+              <i class="fas fa-thumbs-up" />
+            </IconButton>
+            <IconButton onClick={() => this.handleVote(-1)} aria-label="Share">
+              <i class="fas fa-thumbs-down" />
+            </IconButton>
+            <Typography>number of votes:{this.state.votes}</Typography>
             <IconButton
               onClick={this.handleExpandClick}
               aria-expanded={this.state.expanded}
@@ -109,9 +116,20 @@ class SingleArticle extends Component {
       console.log(data);
       console.log(data.article);
       this.setState({
-        SingleArticle: data.article
+        SingleArticle: data.article,
+        votes: data.article.votes
       });
     });
+  };
+
+  handleVote = number => {
+    console.log(number);
+    api.vote(this.props.article_id, number).then(data => {
+      console.log(data);
+    });
+    this.setState(prevState => ({
+      votes: prevState.SingleArticle.votes + number
+    }));
   };
 }
 

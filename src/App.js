@@ -43,7 +43,7 @@ class App extends Component {
           <Router>
             <Articles path="/" />
             <Articles path="/:topic/articles" />
-
+            <Articles path="/:update" />
             <SingleArticle path="/articles/:article_id" />
           </Router>
           <Sidebar />

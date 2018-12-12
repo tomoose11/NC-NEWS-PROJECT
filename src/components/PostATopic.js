@@ -7,12 +7,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as api from '../api/api';
-import { navigate } from '@reach/router';
 
-export default class PostArticle extends React.Component {
+export default class PostATopic extends React.Component {
   state = {
     open: false,
-    title: '',
+    topic: '',
     body: ''
   };
 
@@ -33,7 +32,7 @@ export default class PostArticle extends React.Component {
           style={{ color: 'white', border: '1px solid white' }}
           onClick={this.handleClickOpen}
         >
-          Post an Article
+          Post an Topic
         </Button>
         <Dialog
           open={this.state.open}
@@ -46,24 +45,24 @@ export default class PostArticle extends React.Component {
             <DialogTitle id="form-dialog-title">Post an Article</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Please enter the title of your article
+                Please enter the title of your topic
               </DialogContentText>
               <TextField
                 autoFocus
                 margin="dense"
-                name="title"
+                name="topic"
                 onChange={this.handleChange}
                 id="name"
-                label="title:"
+                label="topic:"
                 type="text"
                 fullWidth
               />
 
               <DialogContentText>
-                Write the body of your article here
+                Write a description of your topic here
               </DialogContentText>
               <TextField
-                label="body:"
+                label="description:"
                 multiline={true}
                 rows={9}
                 name="body"
@@ -92,14 +91,12 @@ export default class PostArticle extends React.Component {
     e.preventDefault();
     console.log(this.state.title, this.state.body);
     api
-      .postArticle({
-        title: this.state.title,
-        user_id: 1,
-        body: this.state.body
+      .postTopic({
+        slug: this.state.topic,
+        description: this.state.body
       })
       .then(data => {
         console.log(data);
-        navigate(`/${this.state.title}`);
       })
       .catch(err => console.log(err));
   };

@@ -11,6 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import PostArticle from './PostAnArticle';
+import PostATopic from './PostATopic';
 
 const styles = {
   root: {
@@ -98,6 +99,14 @@ class Navbar extends React.Component {
                 >
                   <PostArticle />
                 </Button>
+                <Button
+                  style={{
+                    color: 'white',
+                    fontSize: '18px'
+                  }}
+                >
+                  <PostATopic />
+                </Button>
               </Toolbar>
             </AppBar>
           </div>
@@ -114,3 +123,9 @@ Navbar.propTypes = {
 };
 
 export default withStyles(styles)(Navbar);
+
+// ```http
+// POST /api/topics
+// ```
+// - accepts an object containing `slug` and `description` property, the `slug` must be unique
+// - responds with the posted topic object
