@@ -63,25 +63,11 @@ export const postComment = async (id, comment) => {
   return data;
 };
 
-// ```http
-// GET /api/articles/:article_id/comments
-// ```
-// - responds with an array of comments for the given `article_id`
-// - each comment should have
-//     - `comment_id`
-//     - `votes`
-//     - `created_at`
-//     - `author` which is the `username` from the users table
-//     - `body`
+export const deleteComment = async id => {
+  const { data } = await axios.delete(`${BASE_URL}comments/${id}`);
+  return data;
+};
 
-// Queries
-// * This route should accept the following queries:
-//  - limit, which limits the number of responses (defaults to 10)
-//  - sort_by, which sorts the articles by any valid column (defaults to date)
-//  - p, stands for page which specifies the page at which to start (calculated using limit)
-//  - sort_ascending, when "true" returns the results sorted in ascending order (defaults to descending)
-
-// ```http
 // POST /api/articles/:article_id/comments
 // ```
 // - accepts an object with `article_id`,`user_id` and `body`
@@ -102,29 +88,3 @@ export const postComment = async (id, comment) => {
 
 // - should delete the given comment by `comment_id`
 // - should respond with an empty object
-
-// ```http
-// GET /api/users
-// ```
-// - should respond with an array of user objects
-// - each user object should have
-//     - `user_id`
-//     - `username`
-//     - `avatar_url`
-//     - `name`
-
-// ```http
-// GET /api/users/:username
-// ```
-
-// - should respond with a user object
-// - each user should have
-//     - `user_id`
-//     - `username`
-//     - `avatar_url`
-//     - `name`
-
-// ```http
-// GET /api
-// ```
-// - Serves JSON describing all the available endpoints on your API

@@ -21,7 +21,18 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightRegular
   },
   color: { color: 'white' },
-  float: {}
+  textSize: {
+    padding: theme.spacing.unit,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: 18
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: 20
+    }
+  }
 });
 
 class Articles extends Component {
@@ -103,10 +114,10 @@ class Articles extends Component {
                         <Typography
                           variant="subtitle2"
                           style={{
-                            fontSize: '20px',
                             width: '180%',
                             textAlign: 'left'
                           }}
+                          className={classes.textSize}
                         >
                           {item.title}
                         </Typography>

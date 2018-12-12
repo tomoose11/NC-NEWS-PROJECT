@@ -14,6 +14,9 @@ import TextField from '@material-ui/core/TextField';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
   root: {
@@ -23,13 +26,25 @@ const styles = theme => ({
   },
   inline: {
     display: 'inline'
+  },
+  close: {
+    padding: theme.spacing.unit / 2
   }
 });
 
 class Comments extends Component {
   state = {
     comments: [],
-    entry: ''
+    entry: '',
+    open: false
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ open: false });
   };
 
   componentDidMount = () => {
@@ -69,7 +84,10 @@ class Comments extends Component {
         </form>
         {this.state.comments.map((item, index) => {
           return (
-            <ListItem alignItems="flex-start">
+            <ListItem
+              style={{ borderBottom: '1px solid rgba(228, 216, 216, 0.692)' }}
+              alignItems="flex-start"
+            >
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src={Image2} />
               </ListItemAvatar>
@@ -85,15 +103,90 @@ class Comments extends Component {
                       {item.author}
                     </Typography>
                     {item.created_at}
+                    {item.author === 'tickle122' && (
+                      <Button
+                        onClick={() =>
+                          this.handleDeleteComment(item.comment_id)
+                        }
+                        color="secondary"
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    <IconButton
+                      onClick={() => this.handleVote(-1)}
+                      aria-label="Share"
+                    >
+                      <i class="fas fa-thumbs-down fa-xs" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => this.handleVote(-1)}
+                      aria-label="Share"
+                    >
+                      <i class="fas fa-thumbs-up fa-xs" />
+                    </IconButton>
+                    <Typography
+                      style={{ position: 'relative', marginRight: 80 }}
+                    >
+                      number of votes:
+                    </Typography>
                   </React.Fragment>
                 }
               />
             </ListItem>
           );
         })}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id'
+          }}
+          message={<span id="message-id">Note archived</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={this.handleClose}
+            >
+              OK
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
       </List>
     );
   }
+
+  handleDeleteComment = id => {
+    api.deleteComment(id).then(data => {
+      console.log(data);
+    });
+    this.setState(prevState => ({
+      comments: prevState.comments.filter((item, index) => {
+        if (id !== item.comment_id) {
+          console.log(item.comment_id);
+          return item;
+        } else {
+          console.log('found');
+        }
+      })
+    }));
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -101,13 +194,20 @@ class Comments extends Component {
     const comment = { user_id: 1, body: this.state.entry };
     api.postComment(this.props.article_id, comment).then(data => {
       console.log(data);
+      this.setState({ open: true });
     });
-    this.setState(prevState => ({
-      comments: [
-        ...prevState.comments,
-        { ...comment, author: 'tommy2222 posted just now' }
-      ]
-    }));
+    this.setState(
+      prevState => ({
+        comments: [
+          { ...comment, author: 'tommy2222 posted just now' },
+          ...prevState.comments
+        ]
+      }),
+      () => {
+        console.log(this.state.comments);
+      }
+    );
+    console.log(this.props.width);
   };
 
   handleChange = e => {
