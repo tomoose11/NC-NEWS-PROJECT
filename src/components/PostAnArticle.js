@@ -13,7 +13,8 @@ export default class PostArticle extends React.Component {
   state = {
     open: false,
     title: '',
-    body: ''
+    body: '',
+    submitted: false
   };
 
   handleClickOpen = () => {
@@ -25,70 +26,96 @@ export default class PostArticle extends React.Component {
   };
 
   render() {
-    return (
-      <div>
-        <Button
-          variant="outlined"
-          color="white"
-          style={{ color: 'white', border: '1px solid white' }}
-          onClick={this.handleClickOpen}
-        >
-          Post an Article
-        </Button>
+    if (!this.state.submitted) {
+      return (
+        <div>
+          <Button
+            variant="outlined"
+            color="white"
+            style={{ color: 'white', border: '1px solid white' }}
+            onClick={this.handleClickOpen}
+          >
+            Post an Article
+          </Button>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+            maxWidth={'lg'}
+            fullWidth
+          >
+            <form onSubmit={this.handleSubmit}>
+              <DialogTitle id="form-dialog-title">Post an Article</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter the title of your article
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  name="title"
+                  onChange={this.handleChange}
+                  id="name"
+                  label="title:"
+                  type="text"
+                  fullWidth
+                />
+
+                <DialogContentText>
+                  Write the body of your article here
+                </DialogContentText>
+                <TextField
+                  label="body:"
+                  multiline={true}
+                  rows={9}
+                  name="body"
+                  onChange={this.handleChange}
+                  rowsMax={100}
+                  fullWidth
+                  maxWidth={'md'}
+                />
+              </DialogContent>
+
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={this.handleClose}
+                  type="submit"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+              </DialogActions>
+            </form>
+          </Dialog>
+        </div>
+      );
+    } else {
+      return (
         <Dialog
-          open={this.state.open}
+          open={true}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
           maxWidth={'lg'}
           fullWidth
         >
-          <form onSubmit={this.handleSubmit}>
-            <DialogTitle id="form-dialog-title">Post an Article</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Please enter the title of your article
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                name="title"
-                onChange={this.handleChange}
-                id="name"
-                label="title:"
-                type="text"
-                fullWidth
-              />
-
-              <DialogContentText>
-                Write the body of your article here
-              </DialogContentText>
-              <TextField
-                label="body:"
-                multiline={true}
-                rows={9}
-                name="body"
-                onChange={this.handleChange}
-                rowsMax={100}
-                fullWidth
-                maxWidth={'md'}
-              />
-            </DialogContent>
-
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleClose} type="submit" color="primary">
-                Submit
-              </Button>
-            </DialogActions>
-          </form>
+          <div class="wrap">
+            <div class="loading">
+              <div class="bounceball" />
+              <div class="text">NOW LOADING</div>
+            </div>
+          </div>
         </Dialog>
-      </div>
-    );
+      );
+    }
   }
 
   handleSubmit = e => {
+    this.setState({
+      submitted: true
+    });
     e.preventDefault();
     console.log(this.state.title, this.state.body);
     api
@@ -99,7 +126,10 @@ export default class PostArticle extends React.Component {
       })
       .then(data => {
         console.log(data);
-        navigate(`/${this.state.title}`);
+        this.setState({
+          submitted: false
+        });
+        navigate(`/${this.state.title}`, { id: 1 });
       })
       .catch(err => console.log(err));
   };

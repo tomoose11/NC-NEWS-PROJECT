@@ -46,6 +46,7 @@ class Articles extends Component {
   };
 
   componentDidUpdate = prevProps => {
+    console.log(this.props);
     if (this.props.topic !== prevProps.topic) {
       api.getArticles(this.props.topic).then(data => {
         console.log(data);
@@ -60,6 +61,23 @@ class Articles extends Component {
         this.setState({ articles: data.articles });
       });
     }
+  };
+
+  handleDeleteArticle = (e, id) => {
+    e.stopPropagation();
+    api.deleteArticle(id).then(data => {
+      console.log(data);
+    });
+    this.setState(prevState => ({
+      articles: prevState.articles.filter((item, index) => {
+        if (id !== item.article_id) {
+          console.log(item.article_id);
+          return item;
+        } else {
+          console.log('found');
+        }
+      })
+    }));
   };
 
   render() {
@@ -121,25 +139,21 @@ class Articles extends Component {
                             </Link>
                           </Grid>
                           <Grid item>
-                            <Link
-                              to={`/articles/${item.article_id}`}
+                            <Button
+                              onClick={e =>
+                                this.handleDeleteArticle(e, item.article_id)
+                              }
+                              variant="outlined"
                               style={{
-                                textDecoration: 'none',
-                                outline: 'none'
+                                marginLeft: '10px',
+                                backgroundColor: 'white',
+                                color: 'rgb(252, 71, 71)',
+                                zIndex: 1
                               }}
+                              className={classes.float}
                             >
-                              <Button
-                                variant="outlined"
-                                style={{
-                                  marginLeft: '10px',
-                                  backgroundColor: 'white',
-                                  color: 'rgb(252, 71, 71)'
-                                }}
-                                className={classes.float}
-                              >
-                                delete item
-                              </Button>
-                            </Link>
+                              delete item
+                            </Button>
                           </Grid>
                         </Grid>
                       </ExpansionPanelSummary>
@@ -160,7 +174,14 @@ class Articles extends Component {
         </>
       );
     } else {
-      return <h1>loading</h1>;
+      return (
+        <div class="wrap">
+          <div class="loading">
+            <div class="bounceball" />
+            <div class="text">NOW LOADING</div>
+          </div>
+        </div>
+      );
     }
   }
 }

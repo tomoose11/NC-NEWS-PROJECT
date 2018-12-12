@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as api from '../api/api';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -17,14 +18,16 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Comments from './Comments';
+import image from '../images/sandro-schuh-80814-unsplash.jpg';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   card: {
-    maxWidth: 400
+    maxWidth: 1300
   },
   media: {
     height: 0,
-    paddingTop: '56.25%' // 16:9
+    paddingTop: '20.25%' // 16:9
   },
   actions: {
     display: 'flex'
@@ -59,52 +62,100 @@ class SingleArticle extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     if (Object.keys(this.state.SingleArticle).length > 0) {
       return (
-        <Card>
-          <h1>{this.state.SingleArticle.title}</h1>
-
-          <CardMedia
-            image="/static/images/cards/paella.jpg"
-            title="Paella dish"
-          />
-          <CardContent>
-            <Typography component="p">
-              {this.state.SingleArticle.body}
-            </Typography>
-          </CardContent>
-          <CardActions disableActionSpacing>
-            <IconButton aria-label="Add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="Share">
-              <ShareIcon />
-            </IconButton>
-            <IconButton onClick={() => this.handleVote(1)} aria-label="Share">
-              <i class="fas fa-thumbs-up" />
-            </IconButton>
-            <IconButton onClick={() => this.handleVote(-1)} aria-label="Share">
-              <i class="fas fa-thumbs-down" />
-            </IconButton>
-            <Typography>number of votes:{this.state.votes}</Typography>
-            <IconButton
-              onClick={this.handleExpandClick}
-              aria-expanded={this.state.expanded}
-              aria-label="Show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <div className="articles">
+          <Card
+            style={{ margin: 'auto', position: 'relative', top: 20 }}
+            className={classes.card}
+          >
+            <h1>{this.state.SingleArticle.title}</h1>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="Recipe" className={classes.avatar}>
+                  R
+                </Avatar>
+              }
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title="Shrimp and Chorizo Paella"
+              subheader="September 14, 2016"
+            />
+            <CardMedia
+              className={classes.media}
+              image={image}
+              title="Paella dish"
+            />
             <CardContent>
-              <Typography paragraph>Comments:</Typography>
-              <Typography paragraph />
-              <Typography paragraph>
-                <Comments article_id={this.props.article_id} />
+              <Typography
+                align="left"
+                paragraph={true}
+                style={{ fontSize: 17 }}
+                component="p"
+              >
+                {this.state.SingleArticle.body}
               </Typography>
             </CardContent>
-          </Collapse>
-        </Card>
+
+            <CardActions className="articles" style={{ position: 'relative' }}>
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="Share">
+                <ShareIcon />
+              </IconButton>
+              <IconButton onClick={() => this.handleVote(1)} aria-label="Share">
+                <i class="fas fa-thumbs-up" />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleVote(-1)}
+                aria-label="Share"
+              >
+                <i class="fas fa-thumbs-down" />
+              </IconButton>
+              <Typography style={{ position: 'relative', marginRight: 80 }}>
+                number of votes:{this.state.votes}
+              </Typography>
+              <Button
+                color="secondary"
+                variant="raised"
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                Click here to see comments:
+              </Button>
+              <IconButton
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <div className="articles">
+              <Collapse
+                className="articles"
+                in={this.state.expanded}
+                timeout="auto"
+                unmountOnExit
+              >
+                <CardContent>
+                  <Typography paragraph>Comments:</Typography>
+                  <Typography paragraph />
+                  <Typography paragraph>
+                    <Comments article_id={this.props.article_id} />
+                  </Typography>
+                </CardContent>
+              </Collapse>
+            </div>
+          </Card>
+        </div>
       );
     } else {
       return <h1>kjl</h1>;
@@ -133,4 +184,8 @@ class SingleArticle extends Component {
   };
 }
 
-export default SingleArticle;
+SingleArticle.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(SingleArticle);
