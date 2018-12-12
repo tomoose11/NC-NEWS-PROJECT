@@ -92,6 +92,28 @@ body {
     'footer footer';
 }
 
+@media only screen and (max-width: 800px) {
+  .App {
+    text-align: center;
+    height: 100vh;
+    display: grid;
+    grid-template: 2fr 1fr 10fr 1fr /6fr 1fr;
+    grid-template-areas:
+      'header header'
+      'nav nav'
+      'main main'
+      'footer footer';
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  ul {
+    width: 100%;
+  }
+}
+
 html {
   overflow-y: scroll;
 }
@@ -160,4 +182,8 @@ footer {
 .oswald {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+k {
+  color: rgba(228, 216, 216, 0.692);
 }

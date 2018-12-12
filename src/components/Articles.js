@@ -96,20 +96,12 @@ class Articles extends Component {
       const { classes } = this.props;
       return (
         <>
-          <Button
-            style={{
-              color: 'red',
-              fontSize: '18px'
-            }}
-          >
-            <PostArticle />
-          </Button>
-          <ul id="articles" style={{ width: '80%', margin: 'auto' }}>
+          <ul id="articles" style={{ margin: 'auto' }}>
             <div className={classes.root}>
               {this.state.articles.map((item, index) => {
                 return (
                   <>
-                    <ExpansionPanel style={{ margin: '10px' }}>
+                    <ExpansionPanel style={{ marginTop: '1%' }}>
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography
                           variant="subtitle2"

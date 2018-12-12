@@ -42,7 +42,7 @@ export default class PostATopic extends React.Component {
           fullWidth
         >
           <form onSubmit={this.handleSubmit}>
-            <DialogTitle id="form-dialog-title">Post an Article</DialogTitle>
+            <DialogTitle id="form-dialog-title">Post an Topic</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Please enter the title of your topic
