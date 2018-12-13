@@ -119,6 +119,25 @@ class Articles extends Component {
                           direction={'row'}
                           justify="flex-end"
                         >
+                          {item.author === this.props.user && (
+                            <Grid item>
+                              <Button
+                                onClick={e =>
+                                  this.handleDeleteArticle(e, item.article_id)
+                                }
+                                variant="outlined"
+                                style={{
+                                  marginLeft: '10px',
+                                  backgroundColor: 'white',
+                                  color: 'rgb(252, 71, 71)',
+                                  zIndex: 1
+                                }}
+                                className={classes.float}
+                              >
+                                delete item
+                              </Button>
+                            </Grid>
+                          )}
                           <Grid item>
                             <Link
                               to={`/articles/${item.article_id}`}
@@ -140,23 +159,6 @@ class Articles extends Component {
                                 View Article
                               </Button>
                             </Link>
-                          </Grid>
-                          <Grid item>
-                            <Button
-                              onClick={e =>
-                                this.handleDeleteArticle(e, item.article_id)
-                              }
-                              variant="outlined"
-                              style={{
-                                marginLeft: '10px',
-                                backgroundColor: 'white',
-                                color: 'rgb(252, 71, 71)',
-                                zIndex: 1
-                              }}
-                              className={classes.float}
-                            >
-                              delete item
-                            </Button>
                           </Grid>
                         </Grid>
                       </ExpansionPanelSummary>

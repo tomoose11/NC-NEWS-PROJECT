@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 
 const Auth = props => {
   if (props.user) {
+    console.log(props.user);
     return <>{props.children}</>;
   } else {
     return (

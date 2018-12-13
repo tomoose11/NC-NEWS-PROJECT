@@ -121,7 +121,7 @@ export default class PostArticle extends React.Component {
     api
       .postArticle({
         title: this.state.title,
-        user_id: 1,
+        user_id: this.props.user_id,
         body: this.state.body
       })
       .then(data => {

@@ -97,7 +97,7 @@ class Navbar extends React.Component {
                     fontSize: '18px'
                   }}
                 >
-                  <PostArticle />
+                  <PostArticle user_id={this.props.user_id} />
                 </Button>
                 <Button
                   style={{

@@ -48,6 +48,7 @@ class Comments extends Component {
   };
 
   componentDidMount = () => {
+    console.log('jljlklkjlk', this.props.user);
     this.handleCommentsForArticle();
   };
 
@@ -103,7 +104,7 @@ class Comments extends Component {
                       {item.author}
                     </Typography>
                     {item.created_at}
-                    {item.author === 'tickle122' && (
+                    {item.author === this.props.user && (
                       <Button
                         onClick={() =>
                           this.handleDeleteComment(item.comment_id)
@@ -114,13 +115,13 @@ class Comments extends Component {
                       </Button>
                     )}
                     <IconButton
-                      onClick={() => this.handleVote(-1)}
+                      onClick={() => this.handleVote(item.comment_id, -1)}
                       aria-label="Share"
                     >
                       <i class="fas fa-thumbs-down fa-xs" />
                     </IconButton>
                     <IconButton
-                      onClick={() => this.handleVote(-1)}
+                      onClick={() => this.handleVote(item.comment_id, 1)}
                       aria-label="Share"
                     >
                       <i class="fas fa-thumbs-up fa-xs" />
@@ -128,7 +129,7 @@ class Comments extends Component {
                     <Typography
                       style={{ position: 'relative', marginRight: 80 }}
                     >
-                      number of votes:
+                      number of votes: {item.votes}
                     </Typography>
                   </React.Fragment>
                 }
@@ -171,6 +172,16 @@ class Comments extends Component {
       </List>
     );
   }
+
+  handleVote = (id, number) => {
+    console.log(number);
+    api.voteOnComment(this.props.article_id, id, number).then(data => {
+      console.log(data);
+    });
+    // this.setState(prevState => ({
+    //   votes: prevState.SingleArticle.votes + number
+    // }));
+  };
 
   handleDeleteComment = id => {
     api.deleteComment(id).then(data => {

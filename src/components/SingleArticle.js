@@ -59,6 +59,7 @@ class SingleArticle extends Component {
   componentDidMount = () => {
     console.log(this.props.article_id);
     this.handleSingleArticle();
+    console.log('-->singArticle', this.props.user);
   };
 
   render() {
@@ -75,7 +76,7 @@ class SingleArticle extends Component {
             <CardHeader
               avatar={
                 <Avatar aria-label="Recipe" className={classes.avatar}>
-                  R
+                  {this.state.SingleArticle.author[0]}
                 </Avatar>
               }
               action={
@@ -149,7 +150,10 @@ class SingleArticle extends Component {
                   <Typography paragraph>Comments:</Typography>
                   <Typography paragraph />
                   <Typography paragraph>
-                    <Comments article_id={this.props.article_id} />
+                    <Comments
+                      user={this.props.user}
+                      article_id={this.props.article_id}
+                    />
                   </Typography>
                 </CardContent>
               </Collapse>

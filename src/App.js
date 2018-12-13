@@ -17,6 +17,7 @@ class App extends Component {
     topics: [],
     users: [],
     user: '',
+    user_id: 0,
     topic: 'Articles'
   };
 
@@ -39,12 +40,16 @@ class App extends Component {
             handleTopic={this.handleTopic}
             topics={this.state.topics}
             topic={this.state.topic}
+            user_id={this.state.user_id}
           />
           <Router>
-            <Articles path="/" />
-            <Articles path="/:topic/articles" />
-            <Articles path="/:update" />
-            <SingleArticle path="/articles/:article_id" />
+            <Articles user={this.state.user} path="/" />
+            <Articles user={this.state.user} path="/:topic/articles" />
+            <Articles user={this.state.user} path="/:update" />
+            <SingleArticle
+              user={this.state.user}
+              path="/articles/:article_id"
+            />
           </Router>
           <Sidebar />
 
@@ -71,9 +76,15 @@ class App extends Component {
     console.log(this.state.users);
     this.state.users.forEach((userData, index) => {
       if (userData.username === user) {
-        this.setState({
-          user: user
-        });
+        this.setState(
+          {
+            user: user,
+            user_id: userData.user_id
+          },
+          () => {
+            console.log(this.state.user_id);
+          }
+        );
         return console.log('logged in');
       }
     });
