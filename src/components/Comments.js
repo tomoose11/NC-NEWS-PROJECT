@@ -202,7 +202,7 @@ class Comments extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log('submitted');
-    const comment = { user_id: 1, body: this.state.entry };
+    const comment = { user_id: this.props.user_id, body: this.state.entry };
     api.postComment(this.props.article_id, comment).then(data => {
       console.log(data);
       this.setState({ open: true });
@@ -210,7 +210,7 @@ class Comments extends Component {
     this.setState(
       prevState => ({
         comments: [
-          { ...comment, author: 'tommy2222 posted just now' },
+          { ...comment, author: this.props.user },
           ...prevState.comments
         ]
       }),

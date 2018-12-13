@@ -153,6 +153,7 @@ class SingleArticle extends Component {
                     <Comments
                       user={this.props.user}
                       article_id={this.props.article_id}
+                      user_id={this.props.user_id}
                     />
                   </Typography>
                 </CardContent>

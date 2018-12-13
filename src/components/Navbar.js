@@ -44,7 +44,7 @@ class Navbar extends React.Component {
     const { topics } = this.props;
     if (topics.length > 0) {
       return (
-        <nav>
+        <nav style={{ zIndex: 1 }}>
           <div
             className={classes.root}
             style={{ width: '100%', height: '100%' }}

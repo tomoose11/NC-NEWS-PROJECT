@@ -47,6 +47,7 @@ class App extends Component {
             <Articles user={this.state.user} path="/:topic/articles" />
             <Articles user={this.state.user} path="/:update" />
             <SingleArticle
+              user_id={this.state.user_id}
               user={this.state.user}
               path="/articles/:article_id"
             />
