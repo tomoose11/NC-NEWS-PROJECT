@@ -19,7 +19,8 @@ class App extends Component {
     users: [],
     user: '',
     user_id: 0,
-    topic: 'Articles'
+    topic: 'Articles',
+    loggedIn: false
   };
 
   componentDidMount = () => {
@@ -93,7 +94,8 @@ class App extends Component {
         this.setState(
           {
             user: user,
-            user_id: userData.user_id
+            user_id: userData.user_id,
+            loggedIn: true
           },
           () => {
             console.log(this.state.user_id);
@@ -101,6 +103,11 @@ class App extends Component {
         );
         sessionStorage.setItem('user', user);
         return console.log('logged in');
+      }
+    });
+    setTimeout(() => {
+      if (!this.state.loggedIn) {
+        alert('this user does not exist');
       }
     });
   };

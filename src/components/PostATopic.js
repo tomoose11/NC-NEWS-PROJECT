@@ -7,12 +7,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as api from '../api/api';
+import SimpleSnackbar from '../components/snackbar';
 
 export default class PostATopic extends React.Component {
   state = {
     open: false,
     topic: '',
-    body: ''
+    body: '',
+    snack: false
   };
 
   handleClickOpen = () => {
@@ -82,12 +84,30 @@ export default class PostATopic extends React.Component {
             </DialogActions>
           </form>
         </Dialog>
+        <SimpleSnackbar
+          message="TOPIC MUST NOT BE BLANK"
+          snack={this.state.snack}
+        />
       </div>
     );
   }
 
   handleSubmit = e => {
     e.preventDefault();
+    if (this.state.body.length < 1 || this.state.topic.length < 1) {
+      console.log('invalid');
+      this.setState(
+        {
+          snack: true
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ snack: false });
+          }, 3000);
+        }
+      );
+      return this.handleClose();
+    }
     console.log(this.state.title, this.state.body);
     api
       .postTopic({
