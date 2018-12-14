@@ -30,9 +30,9 @@ export const getUsers = async () => {
   return data;
 };
 
-export const postArticle = async article => {
+export const postArticle = async (article, topic) => {
   const { data } = await axios.post(
-    `${BASE_URL}topics/football/articles`,
+    `${BASE_URL}topics/${topic}/articles`,
     article
   );
   return data;

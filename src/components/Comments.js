@@ -8,11 +8,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Image from '../images/beef_noodle.png';
 import Image2 from '../images/jonathan-riley-118591-unsplash.jpg';
 import TextField from '@material-ui/core/TextField';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -188,7 +186,7 @@ class Comments extends Component {
       console.log(data);
     });
     this.setState(prevState => ({
-      comments: prevState.comments.filter((item, index) => {
+      comments: prevState.comments.filter(item => {
         if (id !== item.comment_id) {
           console.log(item.comment_id);
           return item;

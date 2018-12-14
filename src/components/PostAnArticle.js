@@ -8,13 +8,36 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as api from '../api/api';
 import { navigate } from '@reach/router';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
-export default class PostArticle extends React.Component {
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2
+  }
+});
+
+class PostArticle extends React.Component {
   state = {
     open: false,
     title: '',
     body: '',
-    submitted: false
+    submitted: false,
+    topic: ''
   };
 
   handleClickOpen = () => {
@@ -26,12 +49,13 @@ export default class PostArticle extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     if (!this.state.submitted) {
       return (
         <div>
           <Button
             variant="outlined"
-            color="white"
             style={{ color: 'white', border: '1px solid white' }}
             onClick={this.handleClickOpen}
           >
@@ -47,6 +71,33 @@ export default class PostArticle extends React.Component {
             <form onSubmit={this.handleSubmit}>
               <DialogTitle id="form-dialog-title">Post an Article</DialogTitle>
               <DialogContent>
+                <DialogContentText>Please select a topic</DialogContentText>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={ref => {
+                      this.InputLabelRef = ref;
+                    }}
+                    htmlFor="outlined-age-native-simple"
+                  >
+                    Topic
+                  </InputLabel>
+                  <Select
+                    native
+                    onChange={this.handleChange}
+                    input={
+                      <OutlinedInput
+                        name="topic"
+                        labelWidth={this.state.labelWidth}
+                        id="outlined-age-native-simple"
+                      />
+                    }
+                  >
+                    <option value="" />
+                    <option value="football">football</option>
+                    <option value="coding">coding</option>
+                    <option value="cooking">cooking</option>
+                  </Select>
+                </FormControl>
                 <DialogContentText>
                   Please enter the title of your article
                 </DialogContentText>
@@ -113,17 +164,24 @@ export default class PostArticle extends React.Component {
   }
 
   handleSubmit = e => {
+    e.preventDefault();
+    if (this.state.body.length < 1 || this.state.title.length < 1) {
+      alert('article cannot be blank');
+      return this.handleClose();
+    }
     this.setState({
       submitted: true
     });
-    e.preventDefault();
     console.log(this.state.title, this.state.body);
     api
-      .postArticle({
-        title: this.state.title,
-        user_id: this.props.user_id,
-        body: this.state.body
-      })
+      .postArticle(
+        {
+          title: this.state.title,
+          user_id: this.props.user_id,
+          body: this.state.body
+        },
+        this.state.topic
+      )
       .then(data => {
         console.log(data);
         this.setState({
@@ -135,12 +193,18 @@ export default class PostArticle extends React.Component {
   };
 
   handleChange = e => {
-    console.log(e.target.name);
+    console.log(e.target.name, e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 }
+
+PostArticle.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(PostArticle);
 
 // POST /api/topics/:topic/articles
 // ```

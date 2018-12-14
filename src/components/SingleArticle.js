@@ -20,6 +20,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Comments from './Comments';
 import image from '../images/sandro-schuh-80814-unsplash.jpg';
 import Button from '@material-ui/core/Button';
+import { navigate } from '@reach/router/lib/history';
 
 const styles = theme => ({
   card: {
@@ -67,7 +68,7 @@ class SingleArticle extends Component {
 
     if (Object.keys(this.state.SingleArticle).length > 0) {
       return (
-        <div className="articles">
+        <div className="articles card">
           <Card
             style={{ margin: 'auto', position: 'relative', top: 20 }}
             className={classes.card}
@@ -84,8 +85,8 @@ class SingleArticle extends Component {
                   <MoreVertIcon />
                 </IconButton>
               }
-              title="Shrimp and Chorizo Paella"
-              subheader="September 14, 2016"
+              title={this.state.SingleArticle.author}
+              subheader={this.state.SingleArticle.created_at.substring(0, 10)}
             />
             <CardMedia
               className={classes.media}
@@ -139,6 +140,7 @@ class SingleArticle extends Component {
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
+            <div style={{ height: 40 }} />
             <div className="articles">
               <Collapse
                 className="articles"
@@ -163,19 +165,33 @@ class SingleArticle extends Component {
         </div>
       );
     } else {
-      return <h1>kjl</h1>;
+      return (
+        // <div className="wrap">
+        //   <div className="loading">
+        //     <div className="bounceball" />
+        //     <div className="text">NOW LOADING</div>
+        //   </div>
+        // </div>
+        <div>load</div>
+      );
     }
   }
 
   handleSingleArticle = () => {
-    api.getSingleArticle(this.props.article_id).then(data => {
-      console.log(data);
-      console.log(data.article);
-      this.setState({
-        SingleArticle: data.article,
-        votes: data.article.votes
+    api
+      .getSingleArticle(this.props.article_id)
+      .then(data => {
+        console.log(data);
+        console.log(data.article);
+        this.setState({
+          SingleArticle: data.article,
+          votes: data.article.votes
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        navigate('/err', { replace: true });
       });
-    });
   };
 
   handleVote = number => {

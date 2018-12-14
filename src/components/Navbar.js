@@ -68,7 +68,10 @@ class Navbar extends React.Component {
                   }}
                 >
                   Topics{' '}
-                  <i class="fas fa-caret-down" style={{ paddingLeft: '5px' }} />
+                  <i
+                    className="fas fa-caret-down"
+                    style={{ paddingLeft: '5px' }}
+                  />
                 </Button>
                 <Menu
                   id="simple-menu"
@@ -78,6 +81,7 @@ class Navbar extends React.Component {
                 >
                   {topics.map((item, index) => (
                     <Link
+                      key={item.slug}
                       onClick={() => this.props.handleTopic(item.slug)}
                       to={`${item.slug}/articles`}
                       style={{ textDecoration: 'none', outline: 'none' }}

@@ -17,6 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import throttle from 'lodash.throttle';
+import SimpleSnackbar from '../components/snackbar';
 
 const styles = theme => ({
   root: {
@@ -57,7 +58,10 @@ class Articles extends Component {
     postedArticle: {},
     ascending: false,
     anchorEl: null,
-    extendedQuery: ''
+    extendedQuery: '',
+    page: 1,
+    windowHeight: window.innerHeight,
+    open: false
   };
 
   componentDidMount = () => {
@@ -76,7 +80,7 @@ class Articles extends Component {
       });
     }
     window.addEventListener('scroll', this.handleScroll);
-    this.handlethrottle = throttle(this.handleReq, 500);
+    this.handlethrottle = throttle(this.handleReq, 2000);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -90,14 +94,20 @@ class Articles extends Component {
       this.state.ascending !== prevState.ascending ||
       this.state.extendedQuery !== prevState.extendedQuery
     ) {
+      console.log('xxxxxxxxxxxxxxxxxxx');
       api.getArticles(this.props.topic, query).then(data => {
         console.log(data);
-        this.setState({ articles: data.articles });
+        this.setState({
+          articles: data.articles,
+          page: 1,
+          windowHeight: window.innerHeight
+        });
       });
     }
     console.log('updated');
     console.log(this.props.update);
     if (this.props.update !== prevProps.update) {
+      console.log('xxxxxxxxxxxxxxxxxxx');
       api.getArticles(this.props.topic, query).then(data => {
         console.log(data);
         this.setState({ articles: data.articles });
@@ -139,7 +149,9 @@ class Articles extends Component {
   handleSortBy = columnName => {
     this.setState(
       {
-        extendedQuery: `&sort_by=${columnName}`
+        extendedQuery: `&sort_by=${columnName}`,
+        windowHeight: 980,
+        page: 1
       },
       () => {
         console.log(this.state.extendedQuery);
@@ -151,12 +163,11 @@ class Articles extends Component {
 
   handleScroll = e => {
     console.log(e);
-    console.log(window.scrollY);
+    console.log(window.innerHeight);
     //const throttled = throttle(this.handleReq, 500);
-    if (
-      window.innerHeight + window.scrollY >
-      document.body.offsetHeight - 200
-    ) {
+    console.log('docbod', this.state.windowHeight);
+    console.log('windheight', window.innerHeight + window.scrollY);
+    if (window.innerHeight + window.scrollY > this.state.windowHeight - 50) {
       this.handlethrottle();
     }
   };
@@ -164,23 +175,30 @@ class Articles extends Component {
   handlethrottle = () => {};
 
   handleReq = () => {
+    this.setState(prevState => ({
+      windowHeight: prevState.windowHeight + (window.innerHeight - 230)
+    }));
+    console.log('yyyyyyyyyyyyyyyyy');
     console.log('called throttled');
-    // axios
-    //   .get(
-    //     `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02&offset=${
-    //       this.state.offset
-    //     }&limit=10`
-    //   )
-    //   .then(dat => {
-    //     const {
-    //       data: { features }
-    //     } = dat;
-    //     //console.log(features[0].properties.title);
-    //     this.setState(prevState => ({
-    //       arr: [...prevState.arr, ...features],
-    //       offset: prevState.offset + 10
-    //     }));
-    //   });
+    let query = this.state.ascending
+      ? '?sort_ascending=true'
+      : '?sort_ascending=false';
+    query = query + this.state.extendedQuery;
+    query = query + '&p=' + this.state.page;
+    api
+      .getArticles(this.props.topic, query)
+      .then(data => {
+        console.log(data);
+        this.setState(prevState => ({
+          articles: [...prevState.articles, ...data.articles],
+          page: prevState.page + 1
+        }));
+      })
+      .catch(err => {
+        this.setState({
+          open: true
+        });
+      });
   };
 
   render() {
@@ -189,10 +207,10 @@ class Articles extends Component {
       const { classes } = this.props;
       return (
         <>
-          <ul id="articles" style={{ margin: 'auto' }}>
+          <ul className="articles card" style={{ margin: 'auto' }}>
             <Grid
               container
-              spacing={10}
+              spacing={8}
               direction={'row'}
               justify="space-around"
               style={{
@@ -203,7 +221,6 @@ class Articles extends Component {
               <Grid item>
                 <Button
                   onClick={() => this.handleSortAscending(false)}
-                  variant="extended"
                   style={{ margin: 'auto' }}
                 >
                   Sort Descending
@@ -212,7 +229,6 @@ class Articles extends Component {
               <Grid item>
                 <Button
                   onClick={() => this.handleSortAscending(true)}
-                  variant="extended"
                   style={{ margin: 'auto' }}
                 >
                   Sort Ascending
@@ -222,7 +238,7 @@ class Articles extends Component {
                 <Fab variant="extended" onClick={this.handleClick}>
                   Sort by:{' '}
                   <i
-                    class="fas fa-caret-down"
+                    className="fas fa-caret-down"
                     style={{ paddingLeft: '5px', margin: 'auto' }}
                     aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
                     aria-haspopup="true"
@@ -237,6 +253,7 @@ class Articles extends Component {
                 >
                   {Object.keys(this.state.articles[0]).map((item, index) => (
                     <MenuItem
+                      key={item}
                       style={{ border: 'none' }}
                       onClick={() => this.handleSortBy(item)}
                     >
@@ -246,11 +263,14 @@ class Articles extends Component {
                 </Menu>
               </Grid>
             </Grid>
-
+            <SimpleSnackbar
+              message="THIS IS THE LAST ARTICLE"
+              open={this.state.open}
+            />
             <div className={classes.root}>
               {this.state.articles.map((item, index) => {
                 return (
-                  <>
+                  <div key={item.title}>
                     <ExpansionPanel style={{ marginTop: '1%' }}>
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography
@@ -265,7 +285,7 @@ class Articles extends Component {
                         </Typography>
                         <Grid
                           container
-                          spacing={10}
+                          spacing={8}
                           direction={'row'}
                           justify="flex-end"
                         >
@@ -321,7 +341,7 @@ class Articles extends Component {
                         </Typography>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
-                  </>
+                  </div>
                 );
               })}
             </div>
@@ -330,10 +350,10 @@ class Articles extends Component {
       );
     } else {
       return (
-        <div class="wrap">
-          <div class="loading">
-            <div class="bounceball" />
-            <div class="text">NOW LOADING</div>
+        <div className="wrap">
+          <div className="loading">
+            <div className="bounceball" />
+            <div className="text">NOW LOADING</div>
           </div>
         </div>
       );

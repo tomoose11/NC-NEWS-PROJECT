@@ -28,7 +28,6 @@ export default class PostATopic extends React.Component {
       <div>
         <Button
           variant="outlined"
-          color="white"
           style={{ color: 'white', border: '1px solid white' }}
           onClick={this.handleClickOpen}
         >

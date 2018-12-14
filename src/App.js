@@ -11,6 +11,7 @@ import * as api from './api/api';
 import SingleArticle from './components/SingleArticle';
 import Auth from './components/Auth';
 import PostArticle from './components/PostAnArticle';
+import Page404 from './components/page404';
 
 class App extends Component {
   state = {
@@ -22,6 +23,14 @@ class App extends Component {
   };
 
   componentDidMount = () => {
+    // // Get saved data from sessionStorage
+    var data = sessionStorage.getItem('user');
+    if (data) {
+      this.setState({
+        user: data
+      });
+    }
+
     api.getTopics().then(data => {
       console.log(data.topics);
       this.setState({
@@ -51,6 +60,7 @@ class App extends Component {
               user={this.state.user}
               path="/articles/:article_id"
             />
+            <Page404 path="/err" default />
           </Router>
           <Sidebar />
 
@@ -86,6 +96,7 @@ class App extends Component {
             console.log(this.state.user_id);
           }
         );
+        sessionStorage.setItem('user', user);
         return console.log('logged in');
       }
     });
