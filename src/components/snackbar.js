@@ -30,10 +30,16 @@ class SimpleSnackbar extends React.Component {
   };
 
   componentDidUpdate = prevProps => {
-    if (prevProps.open !== this.props.open)
-      this.setState({
-        open: this.props.open
-      });
+    if (
+      prevProps.open !== this.props.open ||
+      prevProps.snack !== this.props.snack
+    ) {
+      if (this.props.snack || this.props.open) {
+        this.setState({
+          open: true
+        });
+      }
+    }
   };
 
   render() {

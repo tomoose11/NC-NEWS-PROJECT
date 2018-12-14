@@ -33,8 +33,10 @@ const styles = theme => ({
 class Comments extends Component {
   state = {
     comments: [],
+    newComments: [],
     entry: '',
-    open: false
+    open: false,
+    votes: 0
   };
 
   handleClose = (event, reason) => {
@@ -113,13 +115,35 @@ class Comments extends Component {
                       </Button>
                     )}
                     <IconButton
-                      onClick={() => this.handleVote(item.comment_id, -1)}
+                      disabled={
+                        item.votes < this.state.newComments[index].votes ||
+                        item.votes > this.state.newComments[index].votes
+                          ? true
+                          : false
+                      }
+                      onClick={() =>
+                        this.handleVote(item.comment_id, -1, item.votes)
+                      }
                       aria-label="Share"
                     >
                       <i class="fas fa-thumbs-down fa-xs" />
                     </IconButton>
+                    <Button
+                      variant="outlined"
+                      onClick={() => this.handleResetVote(item, index)}
+                    >
+                      Reset Vote
+                    </Button>
                     <IconButton
-                      onClick={() => this.handleVote(item.comment_id, 1)}
+                      disabled={
+                        item.votes < this.state.newComments[index].votes ||
+                        item.votes > this.state.newComments[index].votes
+                          ? true
+                          : false
+                      }
+                      onClick={() =>
+                        this.handleVote(item.comment_id, 1, item.votes)
+                      }
                       aria-label="Share"
                     >
                       <i class="fas fa-thumbs-up fa-xs" />
@@ -171,14 +195,62 @@ class Comments extends Component {
     );
   }
 
-  handleVote = (id, number) => {
-    console.log(number);
+  handleVote = (id, number, votes) => {
+    console.log(number, 'prevstate voter' + this.state.comments);
     api.voteOnComment(this.props.article_id, id, number).then(data => {
       console.log(data);
     });
-    // this.setState(prevState => ({
-    //   votes: prevState.SingleArticle.votes + number
-    // }));
+    this.setState(prevState => ({
+      comments: prevState.comments.map((item, index) => {
+        if (item.comment_id === id) {
+          return {
+            ...item,
+            votes: prevState.newComments[index].votes + number
+          };
+        } else {
+          return item;
+        }
+      })
+    }));
+  };
+
+  handleResetVote = (myitem, index) => {
+    let number = 0;
+    if (myitem.votes > this.state.newComments[index].votes) {
+      number = -1;
+      this.setState(prevState => ({
+        comments: prevState.comments.map((item, index) => {
+          if (item.comment_id === myitem.comment_id) {
+            return {
+              ...item,
+              votes: prevState.newComments[index].votes
+            };
+          } else {
+            return item;
+          }
+        })
+      }));
+    }
+    if (myitem.votes < this.state.newComments[index].votes) {
+      number = 1;
+      this.setState(prevState => ({
+        comments: prevState.comments.map((item, index) => {
+          if (item.comment_id === myitem.comment_id) {
+            return {
+              ...item,
+              votes: prevState.newComments[index].votes
+            };
+          } else {
+            return item;
+          }
+        })
+      }));
+    }
+    api
+      .voteOnComment(this.props.article_id, myitem.comment_id, number)
+      .then(data => {
+        console.log(data);
+      });
   };
 
   handleDeleteComment = id => {
@@ -228,7 +300,8 @@ class Comments extends Component {
     api.getCommentsForArticle(this.props.article_id).then(data => {
       console.log(data);
       this.setState({
-        comments: data.comments
+        comments: data.comments,
+        newComments: data.comments
       });
     });
   };

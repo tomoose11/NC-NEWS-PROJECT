@@ -54,7 +54,10 @@ class App extends Component {
           <Router>
             <Articles user={this.state.user} path="/" />
             <Articles user={this.state.user} path="/:topic/articles" />
-            <Articles user={this.state.user} path="/:update" />
+            <Articles
+              user={this.state.user}
+              path="articles/afterpost/:update"
+            />
             <SingleArticle
               user_id={this.state.user_id}
               user={this.state.user}

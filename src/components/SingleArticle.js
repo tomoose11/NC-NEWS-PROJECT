@@ -20,7 +20,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Comments from './Comments';
 import image from '../images/sandro-schuh-80814-unsplash.jpg';
 import Button from '@material-ui/core/Button';
-import { navigate } from '@reach/router/lib/history';
+import { navigate } from '@reach/router';
 
 const styles = theme => ({
   card: {
@@ -111,10 +111,28 @@ class SingleArticle extends Component {
               <IconButton aria-label="Share">
                 <ShareIcon />
               </IconButton>
-              <IconButton onClick={() => this.handleVote(1)} aria-label="Share">
+              <IconButton
+                disabled={
+                  this.state.votes > this.state.SingleArticle.votes ||
+                  this.state.votes < this.state.SingleArticle.votes
+                    ? true
+                    : false
+                }
+                onClick={() => this.handleVote(1)}
+                aria-label="Share"
+              >
                 <i class="fas fa-thumbs-up" />
               </IconButton>
+              <Button variant="outlined" onClick={this.handleResetVote}>
+                Reset Vote
+              </Button>
               <IconButton
+                disabled={
+                  this.state.votes < this.state.SingleArticle.votes ||
+                  this.state.votes > this.state.SingleArticle.votes
+                    ? true
+                    : false
+                }
                 onClick={() => this.handleVote(-1)}
                 aria-label="Share"
               >
@@ -166,13 +184,12 @@ class SingleArticle extends Component {
       );
     } else {
       return (
-        // <div className="wrap">
-        //   <div className="loading">
-        //     <div className="bounceball" />
-        //     <div className="text">NOW LOADING</div>
-        //   </div>
-        // </div>
-        <div>load</div>
+        <div className="wrap">
+          <div className="loading">
+            <div className="bounceball" />
+            <div className="text">NOW LOADING</div>
+          </div>
+        </div>
       );
     }
   }
@@ -190,8 +207,30 @@ class SingleArticle extends Component {
       })
       .catch(err => {
         console.log(err);
-        navigate('/err', { replace: true });
+        navigate('/err', {
+          state: { err: err.message },
+          replace: true
+        });
       });
+  };
+
+  handleResetVote = () => {
+    let number = 0;
+    if (this.state.votes > this.state.SingleArticle.votes) {
+      number = -1;
+      this.setState({
+        votes: this.state.SingleArticle.votes
+      });
+    }
+    if (this.state.votes < this.state.SingleArticle.votes) {
+      number = 1;
+      this.setState({
+        votes: this.state.SingleArticle.votes
+      });
+    }
+    api.vote(this.props.article_id, number).then(data => {
+      console.log(data);
+    });
   };
 
   handleVote = number => {

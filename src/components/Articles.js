@@ -18,6 +18,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import throttle from 'lodash.throttle';
 import SimpleSnackbar from '../components/snackbar';
+import { navigate } from '@reach/router/lib/history';
 
 const styles = theme => ({
   root: {
@@ -69,10 +70,16 @@ class Articles extends Component {
       ? '?sort_ascending=true'
       : '?sort_ascending=false';
     if (this.props.topic) {
-      api.getArticles(this.props.topic, query).then(data => {
-        console.log(data);
-        this.setState({ articles: data.articles });
-      });
+      api
+        .getArticles(this.props.topic, query)
+        .then(data => {
+          console.log(data);
+          this.setState({ articles: data.articles });
+        })
+        .catch(err => {
+          console.log('wonderful err message', err.message);
+          navigate('/err', { state: { err: err.message }, replace: true });
+        });
     } else {
       api.getArticles(this.props.topic, query).then(data => {
         console.log(data);

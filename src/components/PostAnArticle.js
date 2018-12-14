@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import SimpleSnackbar from '../components/snackbar';
 
 const styles = theme => ({
   root: {
@@ -37,7 +38,8 @@ class PostArticle extends React.Component {
     title: '',
     body: '',
     submitted: false,
-    topic: ''
+    topic: '',
+    snack: false
   };
 
   handleClickOpen = () => {
@@ -141,6 +143,10 @@ class PostArticle extends React.Component {
               </DialogActions>
             </form>
           </Dialog>
+          <SimpleSnackbar
+            message="ARTICLE MUST CONTAIN A BODY AND A TITLE"
+            snack={this.state.snack}
+          />
         </div>
       );
     } else {
@@ -166,7 +172,16 @@ class PostArticle extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.body.length < 1 || this.state.title.length < 1) {
-      alert('article cannot be blank');
+      this.setState(
+        {
+          snack: true
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ snack: false });
+          }, 3000);
+        }
+      );
       return this.handleClose();
     }
     this.setState({
@@ -187,7 +202,7 @@ class PostArticle extends React.Component {
         this.setState({
           submitted: false
         });
-        navigate(`/${this.state.title}`, { id: 1 });
+        navigate(`/articles/afterpost/${this.state.title}`, { id: 1 });
       })
       .catch(err => console.log(err));
   };
