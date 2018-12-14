@@ -119,6 +119,10 @@ body {
   }
 }
 
+.headerText {
+  width: 200%;
+}
+
 html {
   overflow-y: scroll;
 }
@@ -131,6 +135,7 @@ header {
   grid-area: header;
   font-family: 'Passion One', cursive;
   font-size: 80px;
+  width: 100%;
 }
 
 .header {

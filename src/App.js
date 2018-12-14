@@ -51,12 +51,17 @@ class App extends Component {
     return (
       <div className="App">
         <Auth findUser={this.findUser} user={this.state.user}>
-          <Header handleTopic={this.handleTopic} />
+          <Header
+            handleLogout={this.handleLogout}
+            user={this.state.user}
+            handleTopic={this.handleTopic}
+          />
           <Navbar
             handleTopic={this.handleTopic}
             topics={this.state.topics}
             topic={this.state.topic}
             user_id={this.state.user_id}
+            user={this.state.user}
           />
           <Router>
             <Articles user={this.state.user} path="/" />
@@ -90,6 +95,14 @@ class App extends Component {
     api.getUsers().then(data => {
       console.log(data);
       this.setState({ users: data.users });
+    });
+  };
+
+  handleLogout = () => {
+    this.setState({
+      user: '',
+      user_id: 0,
+      loggedIn: false
     });
   };
 
