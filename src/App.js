@@ -26,9 +26,15 @@ class App extends Component {
   componentDidMount = () => {
     // // Get saved data from sessionStorage
     var data = sessionStorage.getItem('user');
+    var data2 = sessionStorage.getItem('userid');
     if (data) {
       this.setState({
         user: data
+      });
+    }
+    if (data2) {
+      this.setState({
+        user_id: data2
       });
     }
 
@@ -101,6 +107,7 @@ class App extends Component {
             console.log(this.state.user_id);
           }
         );
+        sessionStorage.setItem('userid', userData.user_id);
         sessionStorage.setItem('user', user);
         return console.log('logged in');
       }

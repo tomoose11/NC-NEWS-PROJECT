@@ -66,6 +66,7 @@ export const deleteArticle = async id => {
 };
 
 export const postComment = async (id, comment) => {
+  console.log(comment);
   const { data } = await axios.post(
     `${BASE_URL}articles/${id}/comments`,
     comment

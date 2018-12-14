@@ -121,7 +121,7 @@ class SingleArticle extends Component {
                 onClick={() => this.handleVote(1)}
                 aria-label="Share"
               >
-                <i class="fas fa-thumbs-up" />
+                <i className="fas fa-thumbs-up" />
               </IconButton>
               <Button variant="outlined" onClick={this.handleResetVote}>
                 Reset Vote
@@ -136,7 +136,7 @@ class SingleArticle extends Component {
                 onClick={() => this.handleVote(-1)}
                 aria-label="Share"
               >
-                <i class="fas fa-thumbs-down" />
+                <i className="fas fa-thumbs-down" />
               </IconButton>
               <Typography style={{ position: 'relative', marginRight: 80 }}>
                 number of votes:{this.state.votes}
