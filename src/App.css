@@ -123,16 +123,8 @@ body {
   }
 }
 
-.headerText {
-  width: 200%;
-}
-
 #img {
   box-shadow: 1px 2px 1px grey;
-}
-
-jlk {
-  color: rgba(177, 171, 171, 0.911);
 }
 
 html {
@@ -145,14 +137,14 @@ html {
 
 header {
   grid-area: header;
-  font-family: 'Passion One', cursive;
-  font-size: 80px;
-  width: 100%;
 }
 
 .header {
   background: url('../src/images/jonathan-riley-118591-unsplash.jpg');
   background-size: 1900px 300px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 nav {
@@ -181,24 +173,16 @@ footer {
   grid-area: main;
 }
 
-/* .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-} */
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
+}
+
+.headerText {
+  font-family: 'Passion One', cursive;
+  font-size: 80px;
+  margin: 0;
+  padding: 0;
+  color: rgb(79, 12, 202);
 }
 
 .oswald {

@@ -25,7 +25,7 @@ import { navigate } from '@reach/router';
 const styles = theme => ({
   card: {
     maxWidth: 1300,
-    minWidth: 400
+    minWidth: 200
   },
   media: {
     height: 0,
@@ -51,9 +51,15 @@ const styles = theme => ({
     backgroundColor: red[500]
   },
   thisWidth: {
-    [theme.breakpoints.down('sm')]: {
-      width: 450,
-      paddingLeft: 30
+    [theme.breakpoints.down('xs')]: {
+      position: 'relative',
+      width: '100%',
+      margin: 'auto'
+    }
+  },
+  displayButton: {
+    [theme.breakpoints.only('xs')]: {
+      display: 'none'
     }
   }
 });
@@ -75,11 +81,8 @@ class SingleArticle extends Component {
 
     if (Object.keys(this.state.SingleArticle).length > 0) {
       return (
-        <div className="articles card">
-          <Card
-            style={{ margin: 'auto', position: 'relative', top: 20 }}
-            className={classes.thisWidth}
-          >
+        <div style={{ margin: 'auto' }} className="articles card">
+          <Card className={classes.thisWidth}>
             <h1>{this.state.SingleArticle.title}</h1>
             <CardHeader
               avatar={
@@ -111,13 +114,7 @@ class SingleArticle extends Component {
               </Typography>
             </CardContent>
 
-            <CardActions className="articles" style={{ position: 'relative' }}>
-              <IconButton aria-label="Add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label="Share">
-                <ShareIcon />
-              </IconButton>
+            <CardActions>
               <IconButton
                 disabled={
                   this.state.votes > this.state.SingleArticle.votes ||
@@ -154,6 +151,7 @@ class SingleArticle extends Component {
                 onClick={this.handleExpandClick}
                 aria-expanded={this.state.expanded}
                 aria-label="Show more"
+                className={classes.displayButton}
               >
                 Click here to see comments:
               </Button>
