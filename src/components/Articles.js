@@ -26,9 +26,9 @@ import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
 import image3 from '../images/hue12-photography-668091-unsplash.jpg';
 
 const picOb = {
-  0: image,
-  1: image2,
-  2: image3
+  football: image,
+  coding: image2,
+  cooking: image3
 };
 
 const styles = theme => ({
@@ -306,7 +306,7 @@ class Articles extends Component {
                             <img
                               className={classes.img}
                               alt="complex"
-                              src={picOb[index % 3]}
+                              src={picOb[item.topic]}
                               id="img"
                               style={{ height: 100, width: 100 }}
                             />
@@ -321,15 +321,50 @@ class Articles extends Component {
                             >
                               {item.title}
                             </Typography>
-                            <Typography
-                              variant="h3"
-                              style={{
-                                textAlign: 'left'
-                              }}
-                              className={classes.textSize}
-                            >
-                              {item.created_at}
-                            </Typography>
+                            <Grid item direction="row">
+                              <Grid container direction="row">
+                                <Typography
+                                  variant="h3"
+                                  style={{
+                                    textAlign: 'left',
+                                    color: 'grey'
+                                  }}
+                                  className={classes.textSize}
+                                >
+                                  {item.created_at.substring(0, 10)}
+                                </Typography>
+                                <Typography
+                                  variant="h3"
+                                  style={{
+                                    textAlign: 'left',
+                                    color: 'rgba(177, 171, 171, 0.911)'
+                                  }}
+                                  className={classes.textSize}
+                                >
+                                  topic: {item.topic}
+                                </Typography>
+                                <Typography
+                                  variant="h3"
+                                  style={{
+                                    textAlign: 'left',
+                                    color: 'rgba(177, 171, 171, 0.911)'
+                                  }}
+                                  className={classes.textSize}
+                                >
+                                  votes: {item.votes}
+                                </Typography>
+                                <Typography
+                                  variant="h3"
+                                  style={{
+                                    textAlign: 'left',
+                                    color: 'rgba(177, 171, 171, 0.911)'
+                                  }}
+                                  className={classes.textSize}
+                                >
+                                  by: {item.author}
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Grid>
                           <Grid item justify="flex-end" alignItems="flex-end">
                             <Grid
