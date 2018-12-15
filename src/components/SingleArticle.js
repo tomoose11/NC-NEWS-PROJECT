@@ -24,7 +24,8 @@ import { navigate } from '@reach/router';
 
 const styles = theme => ({
   card: {
-    maxWidth: 1300
+    maxWidth: 1300,
+    minWidth: 400
   },
   media: {
     height: 0,
@@ -48,6 +49,12 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: red[500]
+  },
+  thisWidth: {
+    [theme.breakpoints.down('sm')]: {
+      width: 450,
+      paddingLeft: 30
+    }
   }
 });
 
@@ -71,7 +78,7 @@ class SingleArticle extends Component {
         <div className="articles card">
           <Card
             style={{ margin: 'auto', position: 'relative', top: 20 }}
-            className={classes.card}
+            className={classes.thisWidth}
           >
             <h1>{this.state.SingleArticle.title}</h1>
             <CardHeader

@@ -110,6 +110,10 @@ body {
       'footer footer';
   }
 
+  .card {
+    width: 100%;
+  }
+
   .sidebar {
     display: none;
   }
@@ -125,6 +129,10 @@ body {
 
 #img {
   box-shadow: 1px 2px 1px grey;
+}
+
+jlk {
+  color: rgba(177, 171, 171, 0.911);
 }
 
 html {
