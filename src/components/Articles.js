@@ -69,7 +69,8 @@ const styles = theme => ({
   image: {
     width: 60,
     height: 60
-  }
+  },
+  cardWidth: {}
 });
 
 ///// end of old
@@ -293,8 +294,11 @@ class Articles extends Component {
             <div className={classes.root}>
               {this.state.articles.map((item, index) => {
                 return (
-                  <div key={item.title}>
-                    <ExpansionPanel style={{ marginTop: '1%' }}>
+                  <div style={{ marginRight: 15 }} key={item.title}>
+                    <ExpansionPanel
+                      style={{ marginTop: '1%' }}
+                      className={classes.cardWidth}
+                    >
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Grid
                           container

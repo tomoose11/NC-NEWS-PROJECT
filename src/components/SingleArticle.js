@@ -53,7 +53,7 @@ const styles = theme => ({
   thisWidth: {
     [theme.breakpoints.down('xs')]: {
       position: 'relative',
-      width: '100%',
+      width: '93%',
       margin: 'auto'
     }
   },
