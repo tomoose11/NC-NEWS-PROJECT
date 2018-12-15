@@ -123,6 +123,10 @@ body {
   width: 200%;
 }
 
+#img {
+  box-shadow: 1px 2px 1px grey;
+}
+
 html {
   overflow-y: scroll;
 }

@@ -55,151 +55,148 @@ class Comments extends Component {
 
   render() {
     const { classes } = this.props;
-    if (!this.state.isLoading) {
-      return (
-        <List style={{ margin: 'auto' }} className={classes.root}>
-          <form onSubmit={this.handleSubmit}>
-            <DialogContentText>
-              Would you like to write a comment?
-            </DialogContentText>
 
-            <TextField
-              variant="outlined"
-              required
-              id="expDate"
-              label="enter your comment here"
-              fullWidth
-              multiline={true}
-              rows={2}
-              name="body"
-              rowsMax={100}
-              style={{ position: 'relative', marginBottom: 10 }}
-              onChange={this.handleChange}
-            />
-            <Button
-              style={{ position: 'relative', marginBottom: 50 }}
-              variant="outlined"
-              color="primary"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </form>
-          {this.state.comments.map((item, index) => {
-            console.log('Iamanitem', item);
-            return (
-              <ListItem
-                key={item.comment_id}
-                style={{ borderBottom: '1px solid rgba(228, 216, 216, 0.692)' }}
-                alignItems="flex-start"
-              >
-                <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src={Image2} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={item.body}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        {item.author}
-                      </Typography>
-                      {item.created_at}
-                      {item.author === this.props.user && (
-                        <Button
-                          onClick={() =>
-                            this.handleDeleteComment(item.comment_id)
-                          }
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                      )}
-                      <IconButton
-                        disabled={
-                          item.votes < this.state.newComments[index].votes ||
-                          item.votes > this.state.newComments[index].votes
-                            ? true
-                            : false
-                        }
-                        onClick={() =>
-                          this.handleVote(item.comment_id, -1, item.votes)
-                        }
-                        aria-label="Share"
-                      >
-                        <i className="fas fa-thumbs-down fa-xs" />
-                      </IconButton>
-                      <Button
-                        variant="outlined"
-                        onClick={() => this.handleResetVote(item, index)}
-                      >
-                        Reset Vote
-                      </Button>
-                      <IconButton
-                        disabled={
-                          item.votes < this.state.newComments[index].votes ||
-                          item.votes > this.state.newComments[index].votes
-                            ? true
-                            : false
-                        }
-                        onClick={() =>
-                          this.handleVote(item.comment_id, 1, item.votes)
-                        }
-                        aria-label="Share"
-                      >
-                        <i class="fas fa-thumbs-up fa-xs" />
-                      </IconButton>
-                      <Typography
-                        style={{ position: 'relative', marginRight: 80 }}
-                      >
-                        number of votes: {item.votes}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            );
-          })}
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left'
-            }}
-            open={this.state.open}
-            autoHideDuration={6000}
-            onClose={this.handleClose}
-            ContentProps={{
-              'aria-describedby': 'message-id'
-            }}
-            message={<span id="message-id">Note archived</span>}
-            action={[
-              <Button
-                key="undo"
-                color="secondary"
-                size="small"
-                onClick={this.handleClose}
-              >
-                OK
-              </Button>,
-              <IconButton
-                key="close"
-                aria-label="Close"
-                color="inherit"
-                className={classes.close}
-                onClick={this.handleClose}
-              >
-                <CloseIcon />
-              </IconButton>
-            ]}
+    return (
+      <List style={{ margin: 'auto' }} className={classes.root}>
+        <form onSubmit={this.handleSubmit}>
+          <DialogContentText>
+            Would you like to write a comment?
+          </DialogContentText>
+
+          <TextField
+            variant="outlined"
+            required
+            id="expDate"
+            label="enter your comment here"
+            fullWidth
+            multiline={true}
+            rows={2}
+            name="body"
+            rowsMax={100}
+            style={{ position: 'relative', marginBottom: 10 }}
+            onChange={this.handleChange}
           />
-        </List>
-      );
-    } else {
-      return <h1>loading</h1>;
-    }
+          <Button
+            style={{ position: 'relative', marginBottom: 50 }}
+            variant="outlined"
+            color="primary"
+            type="submit"
+          >
+            Submit
+          </Button>
+        </form>
+        {this.state.comments.map((item, index) => {
+          console.log('Iamanitem', item);
+          return (
+            <ListItem
+              key={item.comment_id}
+              style={{ borderBottom: '1px solid rgba(228, 216, 216, 0.692)' }}
+              alignItems="flex-start"
+            >
+              <ListItemAvatar>
+                <Avatar alt="Remy Sharp" src={Image2} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={item.body}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      {item.author}
+                    </Typography>
+                    {item.created_at}
+                    {item.author === this.props.user && (
+                      <Button
+                        onClick={() =>
+                          this.handleDeleteComment(item.comment_id)
+                        }
+                        color="secondary"
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    <IconButton
+                      disabled={
+                        item.votes < this.state.newComments[index].votes ||
+                        item.votes > this.state.newComments[index].votes
+                          ? true
+                          : false
+                      }
+                      onClick={() =>
+                        this.handleVote(item.comment_id, -1, item.votes)
+                      }
+                      aria-label="Share"
+                    >
+                      <i className="fas fa-thumbs-down fa-xs" />
+                    </IconButton>
+                    <Button
+                      variant="outlined"
+                      onClick={() => this.handleResetVote(item, index)}
+                    >
+                      Reset Vote
+                    </Button>
+                    <IconButton
+                      disabled={
+                        item.votes < this.state.newComments[index].votes ||
+                        item.votes > this.state.newComments[index].votes
+                          ? true
+                          : false
+                      }
+                      onClick={() =>
+                        this.handleVote(item.comment_id, 1, item.votes)
+                      }
+                      aria-label="Share"
+                    >
+                      <i class="fas fa-thumbs-up fa-xs" />
+                    </IconButton>
+                    <Typography
+                      style={{ position: 'relative', marginRight: 80 }}
+                    >
+                      number of votes: {item.votes}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          );
+        })}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id'
+          }}
+          message={<span id="message-id">Comment Posted</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={this.handleClose}
+            >
+              OK
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
+      </List>
+    );
   }
 
   handleVote = (id, number, votes) => {

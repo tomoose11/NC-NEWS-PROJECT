@@ -19,6 +19,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import throttle from 'lodash.throttle';
 import SimpleSnackbar from '../components/snackbar';
 import { navigate } from '@reach/router/lib/history';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Paper from '@material-ui/core/Paper';
+import image from '../images/sandro-schuh-80814-unsplash.jpg';
+import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
+import image3 from '../images/hue12-photography-668091-unsplash.jpg';
+
+const picOb = {
+  0: image,
+  1: image2,
+  2: image3
+};
 
 const styles = theme => ({
   root: {
@@ -49,8 +60,19 @@ const styles = theme => ({
   menuButton: {
     marginLeft: -12,
     marginRight: 20
+  },
+  img: {
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%'
+  },
+  image: {
+    width: 60,
+    height: 60
   }
 });
+
+///// end of old
 
 class Articles extends Component {
   state = {
@@ -218,7 +240,7 @@ class Articles extends Component {
             <Grid
               container
               spacing={8}
-              direction={'row'}
+              direction="row"
               justify="space-around"
               style={{
                 padding: 10,
@@ -226,18 +248,12 @@ class Articles extends Component {
               }}
             >
               <Grid item>
-                <Button
-                  onClick={() => this.handleSortAscending(false)}
-                  style={{ margin: 'auto' }}
-                >
+                <Button onClick={() => this.handleSortAscending(false)}>
                   Sort Descending
                 </Button>
               </Grid>
               <Grid item>
-                <Button
-                  onClick={() => this.handleSortAscending(true)}
-                  style={{ margin: 'auto' }}
-                >
+                <Button onClick={() => this.handleSortAscending(true)}>
                   Sort Ascending
                 </Button>
               </Grid>
@@ -280,63 +296,91 @@ class Articles extends Component {
                   <div key={item.title}>
                     <ExpansionPanel style={{ marginTop: '1%' }}>
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography
-                          variant="subtitle2"
-                          style={{
-                            width: '180%',
-                            textAlign: 'left'
-                          }}
-                          className={classes.textSize}
-                        >
-                          {item.title}
-                        </Typography>
                         <Grid
                           container
-                          spacing={8}
-                          direction={'row'}
-                          justify="flex-end"
+                          spacing={32}
+                          direction="row"
+                          justify="space-evenly"
                         >
-                          {item.author === this.props.user && (
-                            <Grid item>
-                              <Button
-                                onClick={e =>
-                                  this.handleDeleteArticle(e, item.article_id)
-                                }
-                                variant="outlined"
+                          <Grid item sm={2}>
+                            <img
+                              className={classes.img}
+                              alt="complex"
+                              src={picOb[index % 3]}
+                              id="img"
+                              style={{ height: 100, width: 100 }}
+                            />
+                          </Grid>
+                          <Grid item direction="column" sm={6}>
+                            <Typography
+                              variant="subtitle2"
+                              style={{
+                                textAlign: 'left'
+                              }}
+                              className={classes.textSize}
+                            >
+                              {item.title}
+                            </Typography>
+                            <Typography
+                              variant="h3"
+                              style={{
+                                textAlign: 'left'
+                              }}
+                              className={classes.textSize}
+                            >
+                              {item.created_at}
+                            </Typography>
+                          </Grid>
+                          <Grid item justify="flex-end" alignItems="flex-end">
+                            <Grid
+                              item
+                              sm={3}
+                              container
+                              justify="flex-end"
+                              alignItems="flex-end"
+                            >
+                              <Link
+                                to={`/articles/${item.article_id}`}
                                 style={{
-                                  marginLeft: '10px',
-                                  backgroundColor: 'white',
-                                  color: 'rgb(252, 71, 71)',
-                                  zIndex: 1
+                                  textDecoration: 'none',
+                                  outline: 'none'
                                 }}
-                                className={classes.float}
                               >
-                                delete item
-                              </Button>
+                                <Fab
+                                  style={{
+                                    marginTop: 30,
+                                    transform: 'scale(1.2)'
+                                  }}
+                                  variant="outlined"
+                                  color="primary"
+                                  size="small"
+                                >
+                                  View
+                                </Fab>
+                              </Link>
+                            </Grid>
+                          </Grid>
+                          {item.author === this.props.user && (
+                            <Grid
+                              container
+                              direction="column"
+                              spacing={16}
+                              justify="flex-end"
+                            >
+                              <Grid item spacing={16}>
+                                <Button
+                                  onClick={e =>
+                                    this.handleDeleteArticle(e, item.article_id)
+                                  }
+                                  variant="extended"
+                                  style={{ color: 'red' }}
+                                  size="small"
+                                >
+                                  delete item
+                                </Button>
+                              </Grid>
                             </Grid>
                           )}
-                          <Grid item>
-                            <Link
-                              to={`/articles/${item.article_id}`}
-                              style={{
-                                textDecoration: 'none',
-                                outline: 'none'
-                              }}
-                            >
-                              <Button
-                                variant="outlined"
-                                style={{
-                                  marginLeft: '10px',
-                                  backgroundColor: 'white',
-                                  color: 'rgb(252, 71, 71)',
-                                  flex: 0
-                                }}
-                                className={classes.float}
-                              >
-                                View Article
-                              </Button>
-                            </Link>
-                          </Grid>
                         </Grid>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
