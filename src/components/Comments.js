@@ -292,7 +292,8 @@ class Comments extends Component {
             article_id: this.props.article_id,
             votes: this.state.votes,
             author: this.props.user,
-            comment_id: 4
+            comment_id: 4,
+            created_at: 'createdNow'
           },
           ...prevState.comments
         ],
@@ -302,7 +303,8 @@ class Comments extends Component {
             article_id: this.props.article_id,
             votes: this.state.votes,
             author: this.props.user,
-            comment_id: 4
+            comment_id: 4,
+            created_at: 'createdNow'
           },
           ...prevState.newComments
         ]
