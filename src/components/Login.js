@@ -56,7 +56,7 @@ class Login extends React.Component {
 
     return (
       <main className={classes.main}>
-        <CssBaseline />
+        <CssBaseline tag="base" />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockIcon />

@@ -19,21 +19,19 @@ const styles = theme => ({
     marginRight: 20
   },
   textSize: {
-    [theme.breakpoints.only('xs')]: {
-      marginLeft: 0,
+    [theme.breakpoints.down('sm')]: {
       color: 'white',
       backgroundColor: 'rgba(0, 0, 0, 0.566)'
-    },
-    [theme.breakpoints.up('lg')]: {
-      marginLeft: 350
     }
   },
   buttonMarg: {
-    [theme.breakpoints.up('md')]: {
-      marginRight: 500
-    },
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: 0
+    }
+  },
+  flexAd: {
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
     }
   }
 });
@@ -48,34 +46,53 @@ const Header = props => {
           alignItems="center"
           direction="row"
           style={{ padding: 20 }}
-          justify="center"
           spacing={32}
         >
           <Grid item xs={12} md={4}>
             <Link to="/" style={{ textDecoration: 'none', outline: 'none' }}>
-              <p className="headerText" style={{ margin: 0, padding: 0 }}>
+              <p
+                className="headerText"
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  width: 300,
+                  margin: 'auto'
+                }}
+              >
                 NC News
               </p>
             </Link>
           </Grid>
 
-          <Grid item xs={12} md={4} container justify="flex-end">
-            <Grid item xs={12}>
-              {props.user && (
-                // <Typography>NC NEWS efsfef</Typography>
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  className={classes.textSize}
-                >
-                  Logged in as: {props.user}
-                </Typography>
-              )}
+          <Grid item xs={12} md={4}>
+            <Grid
+              className={classes.flexAd}
+              container
+              direction="row"
+              justify="flex-end"
+            >
+              <Grid item>
+                {props.user && (
+                  // <Typography>NC NEWS efsfef</Typography>
+                  <Typography
+                    variant="h6"
+                    color="primary"
+                    className={classes.textSize}
+                  >
+                    Logged in as: {props.user}
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Grid container direction="row" justify="center">
+            <Grid
+              className={classes.flexAd}
+              container
+              direction="row"
+              justify="flex-end"
+            >
               <Grid item>
                 {props.user && (
                   <Button

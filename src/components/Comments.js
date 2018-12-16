@@ -107,7 +107,7 @@ class Comments extends Component {
                     >
                       {item.author}
                     </Typography>
-                    {item.created_at}
+                    {`    ${item.created_at.substring(0, 10)}`}
                     {item.author === this.props.user && (
                       <Button
                         onClick={() =>

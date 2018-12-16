@@ -18,9 +18,17 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Comments from './Comments';
-import image from '../images/sandro-schuh-80814-unsplash.jpg';
+import image from '../images/sandro-schuh-football.jpg';
 import Button from '@material-ui/core/Button';
 import { navigate } from '@reach/router';
+import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
+import image3 from '../images/hue12-photography-668091-unsplash.jpg';
+
+const picOb = {
+  football: image,
+  coding: image2,
+  cooking: image3
+};
 
 const styles = theme => ({
   card: {
@@ -74,6 +82,7 @@ class SingleArticle extends Component {
     console.log(this.props.article_id);
     this.handleSingleArticle();
     console.log('-->singArticle', this.props.user);
+    console.log('jj', this.props.image);
   };
 
   render() {
@@ -100,7 +109,7 @@ class SingleArticle extends Component {
             />
             <CardMedia
               className={classes.media}
-              image={image}
+              image={picOb[this.state.SingleArticle.topic]}
               title="Paella dish"
             />
             <CardContent>

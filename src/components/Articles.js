@@ -21,7 +21,7 @@ import SimpleSnackbar from '../components/snackbar';
 import { navigate } from '@reach/router/lib/history';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
-import image from '../images/sandro-schuh-80814-unsplash.jpg';
+import image from '../images/sandro-schuh-football.jpg';
 import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
 import image3 from '../images/hue12-photography-668091-unsplash.jpg';
 
@@ -288,7 +288,7 @@ class Articles extends Component {
               </Grid>
             </Grid>
             <SimpleSnackbar
-              message="THIS IS THE LAST ARTICLE"
+              message="ALL ARTICLES HAVE LOADED"
               open={this.state.open}
             />
             <div className={classes.root}>
@@ -379,6 +379,7 @@ class Articles extends Component {
                               alignItems="flex-end"
                             >
                               <Link
+                                jj="jj"
                                 to={`/articles/${item.article_id}`}
                                 style={{
                                   textDecoration: 'none',
