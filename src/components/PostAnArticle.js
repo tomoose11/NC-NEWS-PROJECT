@@ -8,8 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as api from '../api/api';
 import { navigate } from '@reach/router';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
+
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -58,7 +57,11 @@ class PostArticle extends React.Component {
         <div>
           <Button
             variant="outlined"
-            style={{ color: 'white', border: '1px solid white' }}
+            style={{
+              color: 'white',
+              border: '1px solid white',
+              marginRight: 10
+            }}
             onClick={this.handleClickOpen}
           >
             Post an Article

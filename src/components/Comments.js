@@ -49,7 +49,6 @@ class Comments extends Component {
   };
 
   componentDidMount = () => {
-    console.log('jljlklkjlk', this.props.user);
     this.handleCommentsForArticle();
   };
 
@@ -200,10 +199,7 @@ class Comments extends Component {
   }
 
   handleVote = (id, number, votes) => {
-    console.log(number, 'prevstate voter' + this.state.comments);
-    api.voteOnComment(this.props.article_id, id, number).then(data => {
-      console.log(data);
-    });
+    api.voteOnComment(this.props.article_id, id, number).then(data => {});
     this.setState(prevState => ({
       comments: prevState.comments.map((item, index) => {
         if (item.comment_id === id) {
@@ -252,38 +248,29 @@ class Comments extends Component {
     }
     api
       .voteOnComment(this.props.article_id, myitem.comment_id, number)
-      .then(data => {
-        console.log(data);
-      });
+      .then(data => {});
   };
 
   handleDeleteComment = id => {
     api.deleteComment(id).then(data => {
-      console.log(data);
+      alert('Comment deleted');
     });
     this.setState(prevState => ({
       comments: prevState.comments.filter(item => {
-        if (id !== item.comment_id) {
-          console.log(item.comment_id);
-          return item;
-        } else {
-          console.log('found');
-        }
+        return id !== item.comment_id;
       })
     }));
   };
 
   handleSubmit = e => {
-    console.log(this.state.comments);
     e.preventDefault();
-    console.log('submitted');
+
     const comment = { user_id: this.props.user_id, body: this.state.entry };
     this.setState({ isLoading: true });
     api.postComment(this.props.article_id, comment).then(data => {
-      console.log(data);
       this.setState({ open: true, isLoading: false });
     });
-    console.log({ ...comment, author: this.props.user, votes: 0 });
+
     this.setState(
       prevState => ({
         comments: [
@@ -309,21 +296,16 @@ class Comments extends Component {
           ...prevState.newComments
         ]
       }),
-      () => {
-        console.log('after state change', this.state.comments);
-      }
+      () => {}
     );
-    console.log(this.props.width);
   };
 
   handleChange = e => {
-    console.log(e.target.value);
     this.setState({ entry: e.target.value });
   };
 
   handleCommentsForArticle = () => {
     api.getCommentsForArticle(this.props.article_id).then(data => {
-      console.log(data);
       this.setState({
         comments: data.comments,
         newComments: data.comments

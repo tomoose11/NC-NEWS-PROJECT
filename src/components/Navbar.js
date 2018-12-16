@@ -6,8 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import PostArticle from './PostAnArticle';
@@ -59,7 +57,6 @@ class Navbar extends React.Component {
                   {this.props.topic}
                 </Typography>
                 <Button
-                  style={{ flex: 2, textAlign: 'center' }}
                   aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
                   aria-haspopup="true"
                   onClick={this.handleClick}
@@ -95,22 +92,10 @@ class Navbar extends React.Component {
                     </Link>
                   ))}
                 </Menu>
-                <Button
-                  style={{
-                    color: 'white',
-                    fontSize: '18px'
-                  }}
-                >
-                  <PostArticle user_id={this.props.user_id} />
-                </Button>
-                <Button
-                  style={{
-                    color: 'white',
-                    fontSize: '18px'
-                  }}
-                >
-                  <PostATopic />
-                </Button>
+
+                <PostArticle user_id={this.props.user_id} />
+
+                <PostATopic />
               </Toolbar>
             </AppBar>
           </div>
@@ -127,9 +112,3 @@ Navbar.propTypes = {
 };
 
 export default withStyles(styles)(Navbar);
-
-// ```http
-// POST /api/topics
-// ```
-// - accepts an object containing `slug` and `description` property, the `slug` must be unique
-// - responds with the posted topic object

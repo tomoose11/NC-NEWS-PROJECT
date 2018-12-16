@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes, { nominalTypeHack } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from '@reach/router';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { navigate } from '@reach/router';
 
 const styles = theme => ({
   root: {
@@ -53,7 +52,6 @@ const Header = props => {
               <p
                 className="headerText"
                 style={{
-                  margin: 0,
                   padding: 0,
                   width: 300,
                   margin: 'auto'
@@ -98,7 +96,7 @@ const Header = props => {
                   <Button
                     className={classes.buttonMarg}
                     color="primary"
-                    variant="raised"
+                    variant="contained"
                     onClick={props.handleLogout}
                   >
                     Logout

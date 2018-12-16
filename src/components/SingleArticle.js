@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as api from '../api/api';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -13,8 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Comments from './Comments';
@@ -79,10 +76,7 @@ class SingleArticle extends Component {
     this.setState(state => ({ expanded: !state.expanded }));
   };
   componentDidMount = () => {
-    console.log(this.props.article_id);
     this.handleSingleArticle();
-    console.log('-->singArticle', this.props.user);
-    console.log('jj', this.props.image);
   };
 
   render() {
@@ -136,7 +130,15 @@ class SingleArticle extends Component {
               >
                 <i className="fas fa-thumbs-up" />
               </IconButton>
-              <Button variant="outlined" onClick={this.handleResetVote}>
+              <Button
+                variant="outlined"
+                onClick={() =>
+                  this.handleResetVote(
+                    this.state.votes,
+                    this.state.SingleArticle.votes
+                  )
+                }
+              >
                 Reset Vote
               </Button>
               <IconButton
@@ -156,7 +158,7 @@ class SingleArticle extends Component {
               </Typography>
               <Button
                 color="secondary"
-                variant="raised"
+                variant="contained"
                 onClick={this.handleExpandClick}
                 aria-expanded={this.state.expanded}
                 aria-label="Show more"
@@ -212,15 +214,12 @@ class SingleArticle extends Component {
     api
       .getSingleArticle(this.props.article_id)
       .then(data => {
-        console.log(data);
-        console.log(data.article);
         this.setState({
           SingleArticle: data.article,
           votes: data.article.votes
         });
       })
       .catch(err => {
-        console.log(err);
         navigate('/err', {
           state: { err: err.message },
           replace: true
@@ -228,7 +227,7 @@ class SingleArticle extends Component {
       });
   };
 
-  handleResetVote = () => {
+  handleResetVote = (votes, originalVotes) => {
     let number = 0;
     if (this.state.votes > this.state.SingleArticle.votes) {
       number = -1;
@@ -236,22 +235,22 @@ class SingleArticle extends Component {
         votes: this.state.SingleArticle.votes
       });
     }
+    // if(votes > originalVotes) {
+    //   this.setState({
+
+    //   })
+    // }
     if (this.state.votes < this.state.SingleArticle.votes) {
       number = 1;
       this.setState({
         votes: this.state.SingleArticle.votes
       });
     }
-    api.vote(this.props.article_id, number).then(data => {
-      console.log(data);
-    });
+    api.vote(this.props.article_id, number).then(data => {});
   };
 
   handleVote = number => {
-    console.log(number);
-    api.vote(this.props.article_id, number).then(data => {
-      console.log(data);
-    });
+    api.vote(this.props.article_id, number).then(data => {});
     this.setState(prevState => ({
       votes: prevState.SingleArticle.votes + number
     }));

@@ -10,17 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link } from '@reach/router';
 import Grid from '@material-ui/core/Grid';
-import PostArticle from './PostAnArticle';
 import Fab from '@material-ui/core/Fab';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import throttle from 'lodash.throttle';
 import SimpleSnackbar from '../components/snackbar';
 import { navigate } from '@reach/router/lib/history';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Paper from '@material-ui/core/Paper';
 import image from '../images/sandro-schuh-football.jpg';
 import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
 import image3 from '../images/hue12-photography-668091-unsplash.jpg';
@@ -69,11 +64,8 @@ const styles = theme => ({
   image: {
     width: 60,
     height: 60
-  },
-  cardWidth: {}
+  }
 });
-
-///// end of old
 
 class Articles extends Component {
   state = {
@@ -96,16 +88,13 @@ class Articles extends Component {
       api
         .getArticles(this.props.topic, query)
         .then(data => {
-          console.log(data);
           this.setState({ articles: data.articles });
         })
         .catch(err => {
-          console.log('wonderful err message', err.message);
           navigate('/err', { state: { err: err.message }, replace: true });
         });
     } else {
       api.getArticles(this.props.topic, query).then(data => {
-        console.log(data);
         this.setState({ articles: data.articles });
       });
     }
@@ -118,15 +107,13 @@ class Articles extends Component {
       ? '?sort_ascending=true'
       : '?sort_ascending=false';
     query = query + this.state.extendedQuery;
-    console.log(this.props);
+
     if (
       this.props.topic !== prevProps.topic ||
       this.state.ascending !== prevState.ascending ||
       this.state.extendedQuery !== prevState.extendedQuery
     ) {
-      console.log('xxxxxxxxxxxxxxxxxxx');
       api.getArticles(this.props.topic, query).then(data => {
-        console.log(data);
         this.setState({
           articles: data.articles,
           page: 1,
@@ -134,12 +121,9 @@ class Articles extends Component {
         });
       });
     }
-    console.log('updated');
-    console.log(this.props.update);
+
     if (this.props.update !== prevProps.update) {
-      console.log('xxxxxxxxxxxxxxxxxxx');
       api.getArticles(this.props.topic, query).then(data => {
-        console.log(data);
         this.setState({ articles: data.articles });
       });
     }
@@ -147,17 +131,10 @@ class Articles extends Component {
 
   handleDeleteArticle = (e, id) => {
     e.stopPropagation();
-    api.deleteArticle(id).then(data => {
-      console.log(data);
-    });
+    api.deleteArticle(id).then(data => {});
     this.setState(prevState => ({
-      articles: prevState.articles.filter((item, index) => {
-        if (id !== item.article_id) {
-          console.log(item.article_id);
-          return item;
-        } else {
-          console.log('found');
-        }
+      articles: prevState.articles.filter(item => {
+        return id !== item.article_id;
       })
     }));
   };
@@ -177,26 +154,16 @@ class Articles extends Component {
   };
 
   handleSortBy = columnName => {
-    this.setState(
-      {
-        extendedQuery: `&sort_by=${columnName}`,
-        windowHeight: 980,
-        page: 1
-      },
-      () => {
-        console.log(this.state.extendedQuery);
-      }
-    );
+    this.setState({
+      extendedQuery: `&sort_by=${columnName}`,
+      windowHeight: 980,
+      page: 1
+    });
 
     this.handleClose();
   };
 
   handleScroll = e => {
-    console.log(e);
-    console.log(window.innerHeight);
-    //const throttled = throttle(this.handleReq, 500);
-    console.log('docbod', this.state.windowHeight);
-    console.log('windheight', window.innerHeight + window.scrollY);
     if (window.innerHeight + window.scrollY > this.state.windowHeight - 50) {
       this.handlethrottle();
     }
@@ -208,8 +175,7 @@ class Articles extends Component {
     this.setState(prevState => ({
       windowHeight: prevState.windowHeight + (window.innerHeight - 230)
     }));
-    console.log('yyyyyyyyyyyyyyyyy');
-    console.log('called throttled');
+
     let query = this.state.ascending
       ? '?sort_ascending=true'
       : '?sort_ascending=false';
@@ -218,7 +184,6 @@ class Articles extends Component {
     api
       .getArticles(this.props.topic, query)
       .then(data => {
-        console.log(data);
         this.setState(prevState => ({
           articles: [...prevState.articles, ...data.articles],
           page: prevState.page + 1
@@ -232,7 +197,6 @@ class Articles extends Component {
   };
 
   render() {
-    console.log(Object.keys(this.state.articles));
     if (this.state.articles.length > 0) {
       const { classes } = this.props;
       return (
@@ -315,7 +279,7 @@ class Articles extends Component {
                               style={{ height: 100, width: 100 }}
                             />
                           </Grid>
-                          <Grid item direction="column" sm={6}>
+                          <Grid item sm={6}>
                             <Typography
                               variant="subtitle2"
                               style={{
@@ -325,7 +289,7 @@ class Articles extends Component {
                             >
                               {item.title}
                             </Typography>
-                            <Grid item direction="row">
+                            <Grid item>
                               <Grid container direction="row">
                                 <Typography
                                   variant="h3"
@@ -370,7 +334,7 @@ class Articles extends Component {
                               </Grid>
                             </Grid>
                           </Grid>
-                          <Grid item justify="flex-end" alignItems="flex-end">
+                          <Grid item>
                             <Grid
                               item
                               sm={3}
@@ -391,7 +355,6 @@ class Articles extends Component {
                                     marginTop: 30,
                                     transform: 'scale(1.2)'
                                   }}
-                                  variant="outlined"
                                   color="primary"
                                   size="small"
                                 >
@@ -407,12 +370,11 @@ class Articles extends Component {
                               spacing={16}
                               justify="flex-end"
                             >
-                              <Grid item spacing={16}>
+                              <Grid item>
                                 <Button
                                   onClick={e =>
                                     this.handleDeleteArticle(e, item.article_id)
                                   }
-                                  variant="extended"
                                   style={{ color: 'red' }}
                                   size="small"
                                 >
@@ -457,16 +419,3 @@ Articles.propTypes = {
 };
 
 export default withStyles(styles)(Articles);
-
-// PATCH /api/articles/:article_id
-// ```
-// - accepts an object in the form `{  inc_votes: newVote  }`
-//     - `newVote` will indicate how much the `votes` property in the database should be updated by
-//     E.g  `{ inc_votes : 1 }` would increment the current article's vote property by 1
-//          `{ inc_votes : -100 }` would decrement the current article's vote property by 100
-
-// DELETE /api/articles/:article_id
-// ```
-
-// - should delete the given article by `article_id`
-// - should respond with an empty object

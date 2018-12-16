@@ -4,13 +4,11 @@ import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
-import { Router, Link } from '@reach/router';
+import { Router } from '@reach/router';
 import Articles from './components/Articles';
 import * as api from './api/api';
-
 import SingleArticle from './components/SingleArticle';
 import Auth from './components/Auth';
-import PostArticle from './components/PostAnArticle';
 import Page404 from './components/page404';
 
 class App extends Component {
@@ -24,7 +22,6 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    // // Get saved data from sessionStorage
     var data = sessionStorage.getItem('user');
     var data2 = sessionStorage.getItem('userid');
     if (data) {
@@ -39,7 +36,6 @@ class App extends Component {
     }
 
     api.getTopics().then(data => {
-      console.log(data.topics);
       this.setState({
         topics: data.topics
       });
@@ -86,14 +82,11 @@ class App extends Component {
   }
 
   handleTopic = topic => {
-    this.setState({ topic: topic }, () => {
-      console.log(this.state.topic);
-    });
+    this.setState({ topic: topic }, () => {});
   };
 
   handleUsers = () => {
     api.getUsers().then(data => {
-      console.log(data);
       this.setState({ users: data.users });
     });
   };
@@ -107,22 +100,16 @@ class App extends Component {
   };
 
   findUser = user => {
-    console.log(this.state.users);
     this.state.users.forEach((userData, index) => {
       if (userData.username === user) {
-        this.setState(
-          {
-            user: user,
-            user_id: userData.user_id,
-            loggedIn: true
-          },
-          () => {
-            console.log(this.state.user_id);
-          }
-        );
+        this.setState({
+          user: user,
+          user_id: userData.user_id,
+          loggedIn: true
+        });
         sessionStorage.setItem('userid', userData.user_id);
         sessionStorage.setItem('user', user);
-        return console.log('logged in');
+        return;
       }
     });
     setTimeout(() => {
