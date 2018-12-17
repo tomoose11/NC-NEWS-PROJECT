@@ -39,7 +39,7 @@ const Header = props => {
   const { classes } = props;
   return (
     <>
-      <header className="header">
+      <header style={{ height: 140 }} className="header">
         <Grid
           container
           alignItems="center"

@@ -16,7 +16,7 @@ Enter the command `npm start`
 this should start the webpack development server at the address 'localhost:3000'
 You can view the website here.
 
-### RUN TEST ON CYPRESS
+### RUN TESTS ON CYPRESS
 
 Enter the command `npm run cy:open`
 

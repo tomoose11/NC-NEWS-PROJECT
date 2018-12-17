@@ -97,6 +97,7 @@ class App extends Component {
       user_id: 0,
       loggedIn: false
     });
+    sessionStorage.setItem('user', '');
   };
 
   findUser = user => {
