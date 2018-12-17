@@ -12,6 +12,10 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+
+import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
   main: {
@@ -56,6 +60,12 @@ class Login extends React.Component {
 
     return (
       <main className={classes.main}>
+        <Typography variant="h6" className={classes.title}>
+          Please log in as one of the following users:
+        </Typography>
+        <Typography variant="p" className={classes.title}>
+          jessjelly, grumpy19 or weegembump (any password is ok)
+        </Typography>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>

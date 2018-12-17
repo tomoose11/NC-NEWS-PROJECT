@@ -33,7 +33,7 @@ export default class PostATopic extends React.Component {
           style={{ color: 'white', border: '1px solid white' }}
           onClick={this.handleClickOpen}
         >
-          Post an Topic
+          Post a Topic
         </Button>
         <Dialog
           open={this.state.open}
