@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import * as utils from '../utils/utils';
 
 const styles = theme => ({
   root: {
@@ -85,7 +86,6 @@ class Comments extends Component {
           </Button>
         </form>
         {this.state.comments.map((item, index) => {
-          console.log('Iamanitem', item);
           return (
             <ListItem
               key={item.comment_id}
@@ -133,7 +133,15 @@ class Comments extends Component {
                     </IconButton>
                     <Button
                       variant="outlined"
-                      onClick={() => this.handleResetVote(item, index)}
+                      onClick={() =>
+                        this.handleResetVote(
+                          this.state.votes,
+                          this.state.newComments[index].votes,
+                          api.voteOnComment,
+                          item,
+                          index
+                        )
+                      }
                     >
                       Reset Vote
                     </Button>
@@ -149,7 +157,7 @@ class Comments extends Component {
                       }
                       aria-label="Share"
                     >
-                      <i class="fas fa-thumbs-up fa-xs" />
+                      <i className="fas fa-thumbs-up fa-xs" />
                     </IconButton>
                     <Typography
                       style={{ position: 'relative', marginRight: 80 }}
@@ -199,7 +207,7 @@ class Comments extends Component {
   }
 
   handleVote = (id, number, votes) => {
-    api.voteOnComment(this.props.article_id, id, number).then(data => {});
+    api.voteOnComment(this.props.article_id, number, id).then(data => {});
     this.setState(prevState => ({
       comments: prevState.comments.map((item, index) => {
         if (item.comment_id === id) {
@@ -214,42 +222,9 @@ class Comments extends Component {
     }));
   };
 
-  handleResetVote = (myitem, index) => {
-    let number = 0;
-    if (myitem.votes > this.state.newComments[index].votes) {
-      number = -1;
-      this.setState(prevState => ({
-        comments: prevState.comments.map((item, index) => {
-          if (item.comment_id === myitem.comment_id) {
-            return {
-              ...item,
-              votes: prevState.newComments[index].votes
-            };
-          } else {
-            return item;
-          }
-        })
-      }));
-    }
-    if (myitem.votes < this.state.newComments[index].votes) {
-      number = 1;
-      this.setState(prevState => ({
-        comments: prevState.comments.map((item, index) => {
-          if (item.comment_id === myitem.comment_id) {
-            return {
-              ...item,
-              votes: prevState.newComments[index].votes
-            };
-          } else {
-            return item;
-          }
-        })
-      }));
-    }
-    api
-      .voteOnComment(this.props.article_id, myitem.comment_id, number)
-      .then(data => {});
-  };
+  handleVotesState = utils.handleVotesState;
+
+  handleResetVote = utils.handleResetVote;
 
   handleDeleteComment = id => {
     api.deleteComment(id).then(data => {

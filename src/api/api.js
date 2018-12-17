@@ -49,7 +49,7 @@ export const vote = async (id, number) => {
   return data;
 };
 
-export const voteOnComment = async (aid, cid, number) => {
+export const voteOnComment = async (aid, number, cid) => {
   const { data } = await axios.patch(
     `${BASE_URL}articles/${aid}/comments/${cid}`,
     {

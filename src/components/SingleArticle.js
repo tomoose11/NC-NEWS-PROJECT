@@ -20,6 +20,7 @@ import Button from '@material-ui/core/Button';
 import { navigate } from '@reach/router';
 import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
 import image3 from '../images/hue12-photography-668091-unsplash.jpg';
+import * as utils from '../utils/utils';
 
 const picOb = {
   football: image,
@@ -135,7 +136,8 @@ class SingleArticle extends Component {
                 onClick={() =>
                   this.handleResetVote(
                     this.state.votes,
-                    this.state.SingleArticle.votes
+                    this.state.SingleArticle.votes,
+                    api.vote
                   )
                 }
               >
@@ -185,14 +187,13 @@ class SingleArticle extends Component {
                 <CardContent>
                   <Typography paragraph>Comments:</Typography>
                   <Typography paragraph />
-                  <Typography paragraph>
-                    <Comments
-                      user={this.props.user}
-                      article_id={this.props.article_id}
-                      user_id={this.props.user_id}
-                    />
-                  </Typography>
+                  <Typography paragraph />
                 </CardContent>
+                <Comments
+                  user={this.props.user}
+                  article_id={this.props.article_id}
+                  user_id={this.props.user_id}
+                />
               </Collapse>
             </div>
           </Card>
@@ -227,27 +228,8 @@ class SingleArticle extends Component {
       });
   };
 
-  handleResetVote = (votes, originalVotes) => {
-    let number = 0;
-    if (this.state.votes > this.state.SingleArticle.votes) {
-      number = -1;
-      this.setState({
-        votes: this.state.SingleArticle.votes
-      });
-    }
-    // if(votes > originalVotes) {
-    //   this.setState({
-
-    //   })
-    // }
-    if (this.state.votes < this.state.SingleArticle.votes) {
-      number = 1;
-      this.setState({
-        votes: this.state.SingleArticle.votes
-      });
-    }
-    api.vote(this.props.article_id, number).then(data => {});
-  };
+  handleVotesState = utils.handleVotesState;
+  handleResetVote = utils.handleResetVote;
 
   handleVote = number => {
     api.vote(this.props.article_id, number).then(data => {});
