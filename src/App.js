@@ -113,11 +113,15 @@ class App extends Component {
         return;
       }
     });
-    setTimeout(() => {
-      if (!this.state.loggedIn) {
-        alert('this user does not exist');
-      }
-    });
+    if (this.state.users.length > 1) {
+      setTimeout(() => {
+        if (!this.state.loggedIn) {
+          alert('this user does not exist');
+        }
+      });
+    } else {
+      alert('loading');
+    }
   };
 }
 

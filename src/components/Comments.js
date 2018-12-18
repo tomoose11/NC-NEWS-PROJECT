@@ -16,6 +16,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import * as utils from '../utils/utils';
+import Votes from './votes';
 
 const styles = theme => ({
   root: {
@@ -32,14 +33,20 @@ const styles = theme => ({
 });
 
 class Comments extends Component {
-  state = {
-    comments: [],
-    newComments: [],
-    entry: '',
-    open: false,
-    votes: 0,
-    isLoading: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      comments: [],
+      newComments: [],
+      entry: '',
+      open: false,
+      votes: 0,
+      isLoading: false
+    };
+
+    this.handleVotesState = this.handleVotesState.bind(this);
+    this.handleResetVote = this.handleResetVote.bind(this);
+  }
 
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -117,7 +124,15 @@ class Comments extends Component {
                         Delete
                       </Button>
                     )}
-                    <IconButton
+                    <Votes
+                      votes={item.votes}
+                      originalVotes={this.state.newComments[index].votes}
+                      handleVote={this.handleVote}
+                      handleReset={this.handleResetVote}
+                      article_id={this.article_id}
+                      item={item}
+                    />
+                    {/* <IconButton
                       disabled={
                         item.votes < this.state.newComments[index].votes ||
                         item.votes > this.state.newComments[index].votes
@@ -158,7 +173,7 @@ class Comments extends Component {
                       aria-label="Share"
                     >
                       <i className="fas fa-thumbs-up fa-xs" />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography
                       style={{ position: 'relative', marginRight: 80 }}
                     >
@@ -207,6 +222,7 @@ class Comments extends Component {
   }
 
   handleVote = (id, number, votes) => {
+    if (votes === 0 && number < 0) return;
     api.voteOnComment(this.props.article_id, number, id).then(data => {});
     this.setState(prevState => ({
       comments: prevState.comments.map((item, index) => {

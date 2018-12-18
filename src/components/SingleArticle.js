@@ -21,6 +21,7 @@ import { navigate } from '@reach/router';
 import image2 from '../images/dlanor-s-703975-unsplash (1).jpg';
 import image3 from '../images/hue12-photography-668091-unsplash.jpg';
 import * as utils from '../utils/utils';
+import Votes from './votes';
 
 const picOb = {
   football: image,
@@ -71,7 +72,12 @@ const styles = theme => ({
 });
 
 class SingleArticle extends Component {
-  state = { expanded: false, SingleArticle: {}, comments: [], votes: 0 };
+  constructor() {
+    super();
+    this.handleVotesState = this.handleVotesState.bind(this);
+    this.handleResetVote = this.handleResetVote.bind(this);
+    this.state = { expanded: false, SingleArticle: {}, comments: [], votes: 0 };
+  }
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -119,7 +125,15 @@ class SingleArticle extends Component {
             </CardContent>
 
             <CardActions>
-              <IconButton
+              <Votes
+                votes={this.state.votes}
+                originalVotes={this.state.SingleArticle.votes}
+                handleVote={this.handleVote}
+                handleReset={this.handleResetVote}
+                article_id={this.props.article_id}
+                handleVotesState={this.handleVotesState}
+              />
+              {/* <IconButton
                 disabled={
                   this.state.votes > this.state.SingleArticle.votes ||
                   this.state.votes < this.state.SingleArticle.votes
@@ -154,7 +168,7 @@ class SingleArticle extends Component {
                 aria-label="Share"
               >
                 <i className="fas fa-thumbs-down" />
-              </IconButton>
+              </IconButton> */}
               <Typography style={{ position: 'relative', marginRight: 80 }}>
                 number of votes:{this.state.votes}
               </Typography>
@@ -232,6 +246,7 @@ class SingleArticle extends Component {
   handleResetVote = utils.handleResetVote;
 
   handleVote = number => {
+    if (this.state.votes === 0 && number < 0) return;
     api.vote(this.props.article_id, number).then(data => {});
     this.setState(prevState => ({
       votes: prevState.SingleArticle.votes + number

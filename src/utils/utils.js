@@ -1,8 +1,13 @@
 export const handleVotesState = function(originalVotes, myItem) {
   if (!myItem) {
-    this.setState({
-      votes: originalVotes
-    });
+    console.log(this.state.votes);
+    console.log(originalVotes);
+    this.setState(
+      {
+        votes: originalVotes
+      },
+      () => {}
+    );
   } else {
     this.setState(prevState => ({
       comments: prevState.comments.map((item, index) => {
@@ -36,6 +41,7 @@ export const handleResetVote = function(
     number = 1;
   }
   if (myItem) {
+    console.log(number);
     patchVote(this.props.article_id, number, myItem.comment_id).then(
       data => {}
     );
