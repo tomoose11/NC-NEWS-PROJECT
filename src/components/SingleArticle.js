@@ -133,42 +133,7 @@ class SingleArticle extends Component {
                 article_id={this.props.article_id}
                 handleVotesState={this.handleVotesState}
               />
-              {/* <IconButton
-                disabled={
-                  this.state.votes > this.state.SingleArticle.votes ||
-                  this.state.votes < this.state.SingleArticle.votes
-                    ? true
-                    : false
-                }
-                onClick={() => this.handleVote(1)}
-                aria-label="Share"
-              >
-                <i className="fas fa-thumbs-up" />
-              </IconButton>
-              <Button
-                variant="outlined"
-                onClick={() =>
-                  this.handleResetVote(
-                    this.state.votes,
-                    this.state.SingleArticle.votes,
-                    api.vote
-                  )
-                }
-              >
-                Reset Vote
-              </Button>
-              <IconButton
-                disabled={
-                  this.state.votes < this.state.SingleArticle.votes ||
-                  this.state.votes > this.state.SingleArticle.votes
-                    ? true
-                    : false
-                }
-                onClick={() => this.handleVote(-1)}
-                aria-label="Share"
-              >
-                <i className="fas fa-thumbs-down" />
-              </IconButton> */}
+
               <Typography style={{ position: 'relative', marginRight: 80 }}>
                 number of votes:{this.state.votes}
               </Typography>
