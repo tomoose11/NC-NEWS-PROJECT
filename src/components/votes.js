@@ -27,7 +27,7 @@ class Votes extends React.Component {
           }
           aria-label="Share"
         >
-          <i className="fas fa-thumbs-down fa-xs" />
+          <i className="fas fa-thumbs-up fa-xs" />
         </IconButton>
         <Button
           variant="outlined"
@@ -69,7 +69,7 @@ class Votes extends React.Component {
           }
           aria-label="Share"
         >
-          <i className="fas fa-thumbs-up fa-xs" />
+          <i className="fas fa-thumbs-down fa-xs" />
         </IconButton>
       </div>
     );
