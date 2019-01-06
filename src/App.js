@@ -44,41 +44,52 @@ class App extends Component {
   };
 
   render() {
-    return (
-      <div className="App">
-        <Auth findUser={this.findUser} user={this.state.user}>
-          <Header
-            handleLogout={this.handleLogout}
-            user={this.state.user}
-            handleTopic={this.handleTopic}
-          />
-          <Navbar
-            handleTopic={this.handleTopic}
-            topics={this.state.topics}
-            topic={this.state.topic}
-            user_id={this.state.user_id}
-            user={this.state.user}
-          />
-          <Router>
-            <Articles user={this.state.user} path="/" />
-            <Articles user={this.state.user} path="/:topic/articles" />
-            <Articles
+    if (this.state.users.length > 0) {
+      return (
+        <div className="App">
+          <Auth findUser={this.findUser} user={this.state.user}>
+            <Header
+              handleLogout={this.handleLogout}
               user={this.state.user}
-              path="articles/afterpost/:update"
+              handleTopic={this.handleTopic}
             />
-            <SingleArticle
+            <Navbar
+              handleTopic={this.handleTopic}
+              topics={this.state.topics}
+              topic={this.state.topic}
               user_id={this.state.user_id}
               user={this.state.user}
-              path="/articles/:article_id"
             />
-            <Page404 path="/err" default />
-          </Router>
-          <Sidebar />
+            <Router>
+              <Articles user={this.state.user} path="/" />
+              <Articles user={this.state.user} path="/:topic/articles" />
+              <Articles
+                user={this.state.user}
+                path="articles/afterpost/:update"
+              />
+              <SingleArticle
+                user_id={this.state.user_id}
+                user={this.state.user}
+                path="/articles/:article_id"
+              />
+              <Page404 path="/err" default />
+            </Router>
+            <Sidebar />
 
-          <Footer />
-        </Auth>
-      </div>
-    );
+            <Footer />
+          </Auth>
+        </div>
+      );
+    } else {
+      return (
+        <div className="wrap">
+          <div className="loading">
+            <div className="bounceball" />
+            <div className="text">NOW LOADING</div>
+          </div>
+        </div>
+      );
+    }
   }
 
   handleTopic = topic => {

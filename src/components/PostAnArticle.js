@@ -147,7 +147,7 @@ class PostArticle extends React.Component {
             </form>
           </Dialog>
           <SimpleSnackbar
-            message="ARTICLE MUST CONTAIN A BODY AND A TITLE"
+            message="ARTICLE MUST CONTAIN A BODY, TITLE AND TOPIC"
             snack={this.state.snack}
           />
         </div>
@@ -174,7 +174,11 @@ class PostArticle extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this.state.body.length < 1 || this.state.title.length < 1) {
+    if (
+      this.state.body.length < 1 ||
+      this.state.title.length < 1 ||
+      this.state.topic.length < 1
+    ) {
       this.setState(
         {
           snack: true
